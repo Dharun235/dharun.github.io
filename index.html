@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>journey · portfolio</title>
-  <!-- Font Awesome 6 (free) for icons -->
+  <title>embedded · control · ml · portfolio</title>
+  <!-- Font Awesome 6 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * {
@@ -14,443 +14,381 @@
     }
 
     body {
-      background: #f8fafc;
-      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+      background: #0c111d;  /* deep tech background */
+      color: #e2e8f0;
       line-height: 1.6;
-      color: #0f172a;
-      scroll-behavior: smooth;
-    }
-
-    /* main journey container – like a winding path */
-    .journey {
-      max-width: 1100px;
-      margin: 2rem auto;
-      padding: 0 1.5rem 4rem;
       position: relative;
     }
 
-    /* subtle background path (creative connection) */
-    .journey::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 50%;
-      width: 4px;
-      height: 100%;
-      background: linear-gradient(to bottom, 
-        #f59e0b 0%, #f59e0b 15%, 
-        #3b82f6 15%, #3b82f6 40%, 
-        #10b981 40%, #10b981 65%, 
-        #8b5cf6 65%, #8b5cf6 85%, 
-        #ec4899 85%, #ec4899 100%);
-      transform: translateX(-50%);
-      border-radius: 4px;
-      opacity: 0.25;
+    /* ---------- TECH BACKGROUND (mechatronics, embedded, ml, cv) ---------- */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: 
+        /* pcb traces */
+        linear-gradient(90deg, rgba(0, 255, 196, 0.03) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(0, 200, 255, 0.03) 1px, transparent 1px),
+        /* vias / pads */
+        radial-gradient(circle at 20% 30%, #00ffc030 1px, transparent 1px),
+        radial-gradient(circle at 75% 70%, #40ffc020 2px, transparent 2px),
+        repeating-linear-gradient(45deg, #0ff020 0px, #0ff020 1px, transparent 1px, transparent 12px);
+      background-size: 60px 60px, 60px 60px, 80px 80px, 120px 120px, 30px 30px;
+      pointer-events: none;
       z-index: 0;
+      opacity: 0.25;
     }
 
-    /* each section is a "stop" on the journey */
-    .section-card {
-      background: rgba(255, 255, 255, 0.85);
+    /* floating domain icons */
+    body::after {
+      content: "⚡🔧🤖📟🧠⚙️📡🔬🔌🖥️";
+      position: fixed;
+      bottom: 15px;
+      right: 10px;
+      font-size: 4rem;
+      opacity: 0.04;
+      rotate: -3deg;
+      white-space: pre;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .portfolio-wrapper {
+      position: relative;
+      z-index: 5;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 2rem 2rem 3rem;
+    }
+
+    /* section cards — glass with border tech glow */
+    .journey-section {
+      background: rgba(10, 20, 35, 0.8);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-      border-radius: 2.5rem 1rem 2.5rem 1rem;
-      box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(148, 163, 184, 0.1);
-      padding: 2rem 2rem 2rem 2rem;
-      margin-bottom: 5rem;
-      position: relative;
-      z-index: 2;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      border-left: 6px solid transparent;
+      border: 1px solid #2dd4bf30;
+      border-radius: 42px 14px 42px 14px;
+      box-shadow: 0 20px 40px -20px #000000dd, 0 0 0 1px #2dd4bf20 inset;
+      margin-bottom: 3.5rem;
+      padding: 2.2rem 2.2rem;
+      transition: 0.2s;
     }
 
-    .section-card:hover {
-      box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.15);
+    .journey-section:hover {
+      border-color: #2dd4bf80;
+      box-shadow: 0 25px 45px -20px #00ffc040, 0 0 0 2px #2dd4bf30 inset;
     }
 
-    /* colour accents for each step */
-    .card-intro { border-left-color: #f59e0b; }
-    .card-projects { border-left-color: #3b82f6; }
-    .card-work { border-left-color: #10b981; }
-    .card-hobbies { border-left-color: #8b5cf6; }
-    .card-certificates { border-left-color: #d946ef; }
-    .card-current { border-left-color: #ec4899; }
-    .card-contact { border-left-color: #64748b; }
-
-    /* connecting icons (little path markers) */
-    .section-card::after {
-      content: '⬇️';
-      position: absolute;
-      bottom: -2.8rem;
-      left: 50%;
-      transform: translateX(-50%);
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
       font-size: 2rem;
-      opacity: 0.5;
-      filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
-      z-index: 3;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      border-bottom: 2px solid #2dd4bf40;
+      padding-bottom: 0.6rem;
+      margin-bottom: 1.8rem;
+      color: #e6f7ff;
+      text-shadow: 0 0 6px #2dd4bf;
     }
 
-    .section-card:last-child::after {
-      display: none;
+    .section-title i {
+      color: #2dd4bf;
+      font-size: 2rem;
     }
 
-    /* intro row : photo + brief */
+    /* intro row with photo + summary */
     .intro-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 2rem;
+      gap: 2.5rem;
       align-items: center;
     }
     .photo-frame {
-      flex: 0 0 140px;
+      flex: 0 0 160px;
+      border-radius: 40% 60% 30% 70% / 50% 40% 60% 50%;
+      overflow: hidden;
+      border: 3px solid #2dd4bf;
+      box-shadow: 0 0 20px #2dd4bf;
     }
     .photo-frame img {
-      width: 140px;
-      height: 140px;
+      width: 160px;
+      height: 160px;
       object-fit: cover;
-      border-radius: 42% 58% 70% 30% / 44% 36% 64% 56%;
-      box-shadow: 0 20px 25px -8px #94a3b8;
-      border: 4px solid white;
-      transition: border-radius 0.3s;
+      display: block;
     }
-    .photo-frame img:hover {
-      border-radius: 50% 50% 40% 60% / 50% 44% 56% 50%;
-    }
-    .intro-text h2 {
-      font-size: 2.5rem;
-      font-weight: 600;
-      letter-spacing: -0.025em;
-      background: linear-gradient(to right, #0f172a, #334155);
+    .intro-text h1 {
+      font-size: 2.6rem;
+      background: linear-gradient(145deg, #9ffff5, #b5cbff, #cdb5ff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .intro-tagline {
-      font-size: 1.2rem;
-      color: #475569;
-      border-left: 4px solid #f59e0b;
-      padding-left: 1rem;
-      margin-top: 0.5rem;
+    .domain-badge {
+      display: inline-block;
+      background: #112f3e;
+      border: 1px solid #2dd4bf60;
+      border-radius: 40px;
+      padding: 0.25rem 1.2rem;
+      margin: 0.2rem 0.5rem 0.2rem 0;
+      font-size: 0.85rem;
+      color: #a0f0e6;
     }
 
-    /* grids for projects / work / etc */
-    .grid-cards {
+    .grid-2col {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1.8rem;
-      margin-top: 1.8rem;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 1rem;
     }
 
-    .item-card {
-      background: white;
-      border-radius: 1.5rem 0.5rem 1.5rem 0.5rem;
-      padding: 1.2rem;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.02);
-      border: 1px solid #e2e8f0;
-      transition: all 0.15s;
+    .resume-card {
+      background: #0f1d2fcc;
+      border: 1px solid #2a6d71;
+      border-radius: 32px 8px 32px 8px;
+      padding: 1.4rem;
+      transition: 0.15s;
+    }
+    .resume-card:hover {
+      border-color: #2dd4bf;
+      background: #173d4dcc;
+      transform: translateY(-5px);
     }
 
-    .item-card:hover {
-      border-color: #b9c9e0;
-      transform: translateY(-4px);
-    }
-
-    .item-img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-      border-radius: 1rem 0.25rem 1rem 0.25rem;
-      background: #eef2f6;
-      margin-bottom: 0.8rem;
-    }
-
-    .item-title {
-      font-weight: 700;
-      font-size: 1.2rem;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-
-    .tools {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin: 0.6rem 0;
-    }
-
-    .tool-tag {
-      background: #f1f5f9;
-      padding: 0.2rem 0.8rem;
-      border-radius: 20px;
+    .tools-tag {
+      background: #0f2e36;
+      border: 1px solid #2dd4bf70;
+      border-radius: 30px;
+      padding: 0.2rem 1rem;
       font-size: 0.7rem;
-      font-weight: 500;
-      color: #334155;
-      letter-spacing: 0.3px;
-    }
-
-    .links {
-      display: flex;
-      gap: 1rem;
-      margin-top: 0.7rem;
-      font-size: 0.9rem;
+      display: inline-block;
+      margin: 0.2rem 0.3rem 0.2rem 0;
+      color: #b0f5ec;
     }
 
     .links a {
+      color: #9fc5ff;
       text-decoration: none;
-      color: #2563eb;
+      border-bottom: 1px dashed #2dd4bf;
+      margin-right: 1.2rem;
       font-weight: 500;
-      border-bottom: 1px dotted #b1c9ff;
+    }
+    .links i {
+      color: #2dd4bf;
+      margin-right: 0.3rem;
     }
 
-    .links a i {
-      margin-right: 0.2rem;
+    .small-icon {
+      color: #2dd4bf;
+      width: 1.8rem;
+      display: inline-block;
     }
 
-    .badge-current {
-      background: #f0f9ff;
-      border-radius: 30px;
-      padding: 0.5rem 1.2rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.8rem;
-      border: 1px solid #bcd5ff;
+    .cert-item {
+      background: #0c2635b0;
+      border-left: 6px solid #2dd4bf;
+      border-radius: 24px 4px 24px 4px;
+      padding: 0.8rem 1.5rem;
+      margin: 1rem 0;
     }
 
-    .contact-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem;
-      justify-content: center;
-      margin-top: 1rem;
-    }
-    .contact-item {
-      background: white;
-      padding: 0.5rem 1.2rem;
+    .interest-pill {
+      background: #123d44;
       border-radius: 40px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-      border: 1px solid #e9eef3;
-    }
-    .contact-item i {
-      margin-right: 0.5rem;
-      color: #3b82f6;
+      padding: 0.5rem 1.5rem;
+      border: 1px solid #2dd4bf60;
     }
 
-    hr {
-      border: none;
-      height: 2px;
-      background: linear-gradient(to right, transparent, #cbd5e1, transparent);
-      margin: 1.2rem 0;
-    }
-
-    /* responsive adjustments */
-    @media (max-width: 700px) {
-      .journey::before { left: 20px; }
-      .section-card { margin-left: 30px; }
-      .section-card::after { left: 20px; transform: translateX(0); }
-      .intro-row { flex-direction: column; align-items: start; }
-    }
-
-    /* additional flair */
-    .emojii-path {
-      font-size: 1.8rem;
+    .footer-note {
       text-align: center;
-      margin: 1rem 0 0.5rem;
-      opacity: 0.7;
-      letter-spacing: 6px;
-    }
-    .foot-note {
-      text-align: center;
-      color: #62748c;
-      margin-top: 3rem;
+      color: #6b9faa;
+      margin-top: 4rem;
       font-style: italic;
+    }
+    hr {
+      border: 0.5px solid #2dd4bf30;
+      margin: 1.8rem 0;
+    }
+
+    /* responsive */
+    @media (max-width: 700px) {
+      .intro-row { flex-direction: column; align-items: start; }
     }
   </style>
 </head>
 <body>
+<div class="portfolio-wrapper">
 
-<div class="journey">
-
-  <!-- INTRO (with photo) -->
-  <div class="section-card card-intro">
+  <!-- INTRO with PHOTO (based on resume summary) -->
+  <section class="journey-section">
     <div class="intro-row">
       <div class="photo-frame">
-        <!-- replace src with your actual photo, I'm using a placeholder with nice abstract -->
-        <img src="https://ui-avatars.com/api/?background=0D9488&color=fff&size=140&name=Alex+River" alt="profile photo">
-      </div>
-      <div class="intro-text">
-        <h2>alex river · journey log</h2>
-        <div class="intro-tagline">
-          <i class="fas fa-map-pin" style="color:#f59e0b;"></i> building & exploring — one stop after another.
-        </div>
-        <p style="margin-top: 0.8rem; max-width: 500px;">👋 I’m Alex, dev & tinkerer. This is my storyboard: projects, work, hobbies, certificates and what’s alive now.</p>
-      </div>
-    </div>
-    <div class="emojii-path">⛳ 🧭 ⛰️</div>
-  </div>
-
-  <!-- HOBBY PROJECTS -->
-  <div class="section-card card-projects">
-    <h2><i class="fas fa-code-branch" style="color:#3b82f6;"></i> hobby projects</h2>
-    <div class="grid-cards">
-      <!-- project 1 -->
-      <div class="item-card">
-        <img class="item-img" src="https://placecats.com/300/200?random=1" alt="project preview">
-        <div class="item-title"><i class="fas fa-robot" style="color:#3b82f6;"></i> brewBot</div>
-        <p style="font-size:0.9rem; margin:0.2rem 0;">a slack bot that suggests coffee recipes based on weather ☕</p>
-        <div class="tools">
-          <span class="tool-tag">Python</span>
-          <span class="tool-tag">Flask</span>
-          <span class="tool-tag">Slack API</span>
-        </div>
-        <div class="links">
-          <a href="#"><i class="fab fa-github"></i> repo</a>
-          <a href="#"><i class="fas fa-external-link-alt"></i> demo</a>
-        </div>
-      </div>
-      <!-- project 2 -->
-      <div class="item-card">
-        <img class="item-img" src="https://placecats.com/300/200?random=2" alt="project preview">
-        <div class="item-title"><i class="fas fa-leaf" style="color:#3b82f6;"></i> gardenPulse</div>
-        <p>IoT soil monitor with cute dashboard (used by my mom 🌱)</p>
-        <div class="tools">
-          <span class="tool-tag">Arduino</span>
-          <span class="tool-tag">Node.js</span>
-          <span class="tool-tag">Chart.js</span>
-        </div>
-        <div class="links">
-          <a href="#"><i class="fab fa-github"></i> frontend</a>
-          <a href="#"><i class="fas fa-microchip"></i> hardware</a>
-        </div>
-      </div>
-      <!-- project 3 -->
-      <div class="item-card">
-        <img class="item-img" src="https://placecats.com/300/200?random=3" alt="project preview">
-        <div class="item-title"><i class="fas fa-globe" style="color:#3b82f6;"></i> localecho</div>
-        <p>hyperlocal community board – PWA with maps</p>
-        <div class="tools">
-          <span class="tool-tag">React</span>
-          <span class="tool-tag">Firebase</span>
-          <span class="tool-tag">Mapbox</span>
-        </div>
-        <div class="links">
-          <a href="#"><i class="fab fa-github"></i> code</a>
-          <a href="#"><i class="fas fa-play-circle"></i> preview</a>
-        </div>
-      </div>
-    </div>
-    <p style="margin-top: 1rem; font-style:italic; color:#475569;"><i class="fa-regular fa-heart"></i> every project is a learning mile</p>
-  </div>
-
-  <!-- WORK EXPERIENCE (interns & competition teams) -->
-  <div class="section-card card-work">
-    <h2><i class="fas fa-briefcase" style="color:#10b981;"></i> work & competition teams</h2>
-    <div class="grid-cards">
-      <!-- intern 1 -->
-      <div class="item-card">
-        <img class="item-img" src="https://placecats.com/300/201?random=4" alt="work">
-        <div class="item-title"><i class="fas fa-laptop-code"></i> swE intern @ turbosoft</div>
-        <p>summer '24 – built internal tool for log analysis, reduced debug time by 30%.</p>
-        <div class="tools"><span class="tool-tag">React</span><span class="tool-tag">Go</span><span class="tool-tag">Docker</span></div>
-        <div class="links"><a href="#"><i class="fas fa-link"></i> case study</a></div>
-      </div>
-      <!-- intern 2 -->
-      <div class="item-card">
-        <img class="item-img" src="https://placecats.com/300/202?random=5" alt="work">
-        <div class="item-title"><i class="fas fa-flask"></i> data intern @ healthai</div>
-        <p>clean & viz for patient flow – presented to clinical team.</p>
-        <div class="tools"><span class="tool-tag">Python</span><span class="tool-tag">Pandas</span><span class="tool-tag">Tableau</span></div>
-        <div class="links"><a href="#"><i class="fas fa-file-pdf"></i> poster</a></div>
-      </div>
-      <!-- competition team -->
-      <div class="item-card">
-        <img class="item-img" src="https://placecats.com/300/203?random=6" alt="competition">
-        <div class="item-title"><i class="fas fa-trophy"></i> NASA space apps 2024</div>
-        <p>global nominee – "exosky" interactive star mapper.</p>
-        <div class="tools"><span class="tool-tag">Three.js</span><span class="tool-tag">NASA API</span></div>
-        <div class="links"><a href="#"><i class="fab fa-github"></i> team repo</a><a href="#"><i class="fas fa-video"></i> pitch</a></div>
-      </div>
-      <!-- another comp team -->
-      <div class="item-card">
-        <img class="item-img" src="https://placecats.com/300/204?random=7" alt="competition">
-        <div class="item-title"><i class="fas fa-robot"></i> robocup junior</div>
-        <p>co-lead mechanics & control – national 2nd place 2023</p>
-        <div class="tools"><span class="tool-tag">C++</span><span class="tool-tag">ROS</span><span class="tool-tag">CAD</span></div>
-        <div class="links"><a href="#"><i class="fas fa-camera"></i> gallery</a></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- HOBBIES section -->
-  <div class="section-card card-hobbies">
-    <h2><i class="fas fa-palette" style="color:#8b5cf6;"></i> hobbies & side streams</h2>
-    <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; margin: 1.2rem 0;">
-      <span class="badge-current"><i class="fas fa-camera-retro"></i> film photography (olympus OM-10)</span>
-      <span class="badge-current"><i class="fas fa-chess-queen"></i> chess (1600 rapid)</span>
-      <span class="badge-current"><i class="fas fa-hiking"></i> trail running</span>
-    </div>
-    <div class="grid-cards" style="grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));">
-      <div><img src="https://placecats.com/400/200?random=11" style="width:100%; border-radius: 20px;" alt="hobby"><p>📸 35mm roll – toscanα</p></div>
-      <div><img src="https://placecats.com/400/200?random=12" style="width:100%; border-radius: 20px;" alt="hobby"><p>♟️ local club tournament</p></div>
-    </div>
-  </div>
-
-  <!-- CERTIFICATES section -->
-  <div class="section-card card-certificates">
-    <h2><i class="fas fa-certificate" style="color:#d946ef;"></i> certificates & micro‑credentials</h2>
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <div style="background: #faf5ff; border-radius: 1rem; padding: 1rem 1.5rem;">
-        <i class="fab fa-aws" style="color:#ff9900;"></i> <strong>AWS Cloud practitioner</strong> (2024) · <span style="font-family: monospace;">VLD7C9K</span>
-      </div>
-      <div style="background: #f0f9ff; border-radius: 1rem; padding: 1rem 1.5rem;">
-        <i class="fas fa-database"></i> <strong>DeepLearning.AI TensorFlow Developer</strong> · issued nov 2023
-      </div>
-      <div style="background: #ecfdf5; border-radius: 1rem; padding: 1rem 1.5rem;">
-        <i class="fas fa-lock"></i> <strong>Google Cybersecurity Certificate</strong> (in progress .. 80%)
-      </div>
-    </div>
-    <p style="margin-top: 1rem; ">📜 all credentials on <a href="#">linkedin</a> / <a href="#">badgr</a></p>
-  </div>
-
-  <!-- WHAT'S HAPPENING CURRENTLY -->
-  <div class="section-card card-current">
-    <h2><i class="fas fa-sparkles" style="color:#ec4899;"></i> now · currently in my life</h2>
-    <div style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: center;">
-      <div style="min-width: 200px;">
-        <img src="https://placecats.com/400/200?random=99" style="max-width: 100%; border-radius: 2rem;" alt="current">
+        <!-- using resume initial, replace with actual photo -->
+        <img src="https://ui-avatars.com/api/?background=0f3b44&color=fff&size=160&name=AR" alt="profile">
       </div>
       <div>
-        <ul style="list-style-type: none;">
-          <li><i class="fa-regular fa-face-smile" style="color:#ec4899;"></i> ✦ learning 3D web (three.js journey)</li>
-          <li><i class="fa-regular fa-face-smile"></i> ✦ building a mobile bird‑id app with my friend</li>
-          <li><i class="fa-regular fa-face-smile"></i> ✦ reading "the song of the cell"</li>
-          <li><i class="fa-regular fa-face-smile"></i> ✦ prepping for fall internship hunt</li>
-        </ul>
+        <h1>Alex Rivera</h1>
+        <div style="margin: 0.5rem 0 1rem;">
+          <span class="domain-badge"><i class="fas fa-microchip"></i> embedded</span>
+          <span class="domain-badge"><i class="fas fa-sliders-h"></i> control</span>
+          <span class="domain-badge"><i class="fas fa-brain"></i> ML</span>
+          <span class="domain-badge"><i class="fas fa-robot"></i> robotics</span>
+          <span class="domain-badge"><i class="fas fa-eye"></i> computer vision</span>
+        </div>
+        <p style="max-width: 600px;"><i class="fas fa-quote-left" style="color:#2dd4bf;"></i> 
+          Master's student in Systems, Control and Mechatronics (Autonomous Systems track) at Chalmers. 
+          Seeking entry-level roles in embedded systems, control engineering, or machine learning. 
+          Hands-on with Python, C/C++, STM32, FreeRTOS, and CI/CD in robotics, aerospace, and automotive projects. 
+          Eligible for Swedish post-study work permit (summer 2026).
+        </p>
       </div>
     </div>
-  </div>
+    <div style="text-align: center; font-size: 1.8rem; opacity: 0.3; margin-top: 1rem;">⚡🔧⚙️</div>
+  </section>
 
-  <!-- CONTACT section -->
-  <div class="section-card card-contact">
-    <h2><i class="fas fa-paper-plane" style="color:#64748b;"></i> connect / contact</h2>
-    <div class="contact-row">
-      <span class="contact-item"><i class="fab fa-github"></i> @alexriver</span>
-      <span class="contact-item"><i class="fab fa-linkedin-in"></i> alex-river</span>
-      <span class="contact-item"><i class="fas fa-envelope"></i> hello@alex.dev</span>
-      <span class="contact-item"><i class="fas fa-mastodon"></i> @alex@fosstodon.org</span>
+  <!-- SKILLS (languages, tools, ML, embedded) -->
+  <section class="journey-section">
+    <div class="section-title"><i class="fas fa-code"></i> skills & toolchain</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 1.8rem; justify-content: space-between;">
+      <div style="min-width: 200px;">
+        <h3><i class="fas fa-terminal" style="color:#2dd4bf;"></i> languages</h3>
+        <p>Python · C/C++ · Embedded C · MATLAB/Simulink · JavaScript · TypeScript</p>
+      </div>
+      <div style="min-width: 200px;">
+        <h3><i class="fas fa-tools"></i> tools & OS</h3>
+        <p>Git · Docker · Yarn · Google Test · Pytest · GitHub Actions · ROS2 · Linux · FreeRTOS · CAN</p>
+      </div>
+      <div style="min-width: 200px;">
+        <h3><i class="fas fa-database"></i> databases / ml</h3>
+        <p>MongoDB · Elasticsearch · Kibana · PyTorch · TensorFlow · OpenCV · FiftyOne · Prefect</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK EXPERIENCE (interns, research, rocket project) -->
+  <section class="journey-section">
+    <div class="section-title"><i class="fas fa-briefcase"></i> work & research</div>
+    <div class="grid-2col">
+      <!-- research assistant 1 (current) -->
+      <div class="resume-card">
+        <h3><i class="fas fa-flask"></i> Research Assistant – Chalmers <span style="color:#8dd0ff;">(Jan 2026 – present)</span></h3>
+        <p>Migrated MongoDB to Elasticsearch, built Kibana plugin + FastAPI ingestion for quantum workflows.</p>
+        <div><span class="tools-tag">Python</span><span class="tools-tag">MongoDB</span><span class="tools-tag">Docker</span><span class="tools-tag">Elasticsearch</span><span class="tools-tag">Kibana</span><span class="tools-tag">React</span><span class="tools-tag">Node.js</span></div>
+      </div>
+      <!-- master thesis ESAB -->
+      <div class="resume-card">
+        <h3><i class="fas fa-graduation-cap"></i> Master Thesis @ ESAB <span style="color:#8dd0ff;">(Jan 2026 – present)</span></h3>
+        <p>CV models (OpenCV) on high-speed welding images; predict arc characteristics from sensor data (camera‑free).</p>
+        <div><span class="tools-tag">OpenCV</span><span class="tools-tag">PyTorch</span><span class="tools-tag">NumPy</span><span class="tools-tag">Pandas</span><span class="tools-tag">FiftyOne</span><span class="tools-tag">Prefect</span><span class="tools-tag">Linux</span></div>
+      </div>
+      <!-- EUROC rocket -->
+      <div class="resume-card">
+        <h3><i class="fas fa-rocket"></i> Software Engineer – EUROC 2026 (CAESAR)</h3>
+        <p>Flight computer: FreeRTOS scheduling, state machines, CI/CD, testing, GUI.</p>
+        <div><span class="tools-tag">FreeRTOS</span><span class="tools-tag">C/C++</span><span class="tools-tag">Google Test</span><span class="tools-tag">GitHub Actions</span><span class="tools-tag">React</span><span class="tools-tag">Node.js</span></div>
+      </div>
+      <!-- summer intern resolve EV -->
+      <div class="resume-card">
+        <h3><i class="fas fa-car"></i> Summer Intern – Resolve EV <span style="color:#8dd0ff;">(July–Aug 2025)</span></h3>
+        <p>STM32 quick‑charging module with VW ID.4 protocol over CAN.</p>
+        <div><span class="tools-tag">C/C++</span><span class="tools-tag">STM32</span><span class="tools-tag">CAN</span></div>
+      </div>
+      <!-- research assistant 2 (LLM+robots) -->
+      <div class="resume-card">
+        <h3><i class="fas fa-robot"></i> Research Assistant – Chalmers <span style="color:#8dd0ff;">(Dec 2024–Sept 2025)</span></h3>
+        <p>LLM (Gemini) integration with Misty/Pepper robots; OpenCV detection; Electron/Flask interface.</p>
+        <div><span class="tools-tag">Python</span><span class="tools-tag">OpenCV</span><span class="tools-tag">LLMs</span><span class="tools-tag">Flask</span><span class="tools-tag">JavaScript</span><span class="tools-tag">Electron</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS (robust control, sensor fusion, battery, glove, quadrotor) -->
+  <section class="journey-section">
+    <div class="section-title"><i class="fas fa-code-branch"></i> key projects</div>
+    <div class="grid-2col">
+      <div class="resume-card">
+        <h3><i class="fas fa-shield-alt"></i> Robust Mobile Robot Control</h3>
+        <p>Adversarial training with pure pursuit / nonlinear MPC (warm‑start CEM); improved success rate 34%→56% (74% with pursuit).</p>
+        <div><span class="tools-tag">PyTorch</span><span class="tools-tag">Python</span></div>
+        <div class="links"><a href="#"><i class="fab fa-github"></i> GitHub</a></div>
+      </div>
+      <div class="resume-card">
+        <h3><i class="fas fa-satellite"></i> Sensor Fusion & Tracking</h3>
+        <p>LiDAR/camera fusion (Waymo); EKF for 3D vehicle tracking in CARLA.</p>
+        <div><span class="tools-tag">TensorFlow</span><span class="tools-tag">Python</span><span class="tools-tag">ROS2</span><span class="tools-tag">C++</span><span class="tools-tag">OpenCV</span></div>
+        <div class="links"><a href="#"><i class="fab fa-github"></i> repo</a></div>
+      </div>
+      <div class="resume-card">
+        <h3><i class="fas fa-battery-three-quarters"></i> Battery health prediction</h3>
+        <p>LSTM/GRU/CNN‑LSTM/Transformer for Li‑ion RUL prediction; Transformer+weighted pooling best.</p>
+        <div><span class="tools-tag">PyTorch</span><span class="tools-tag">NumPy</span><span class="tools-tag">Pandas</span></div>
+        <div class="links"><a href="#"><i class="fab fa-github"></i> code</a></div>
+      </div>
+      <div class="resume-card">
+        <h3><i class="fas fa-hand-paper"></i> Smart Hand Wearable (Speech Impaired)</h3>
+        <p>Flex sensor glove → Bluetooth text; voltage divider + amplifier. <a href="#" style="color:#9fd9ff;">Publication</a></p>
+        <div><span class="tools-tag">Embedded C</span><span class="tools-tag">circuits</span></div>
+      </div>
+      <div class="resume-card">
+        <h3><i class="fas fa-helicopter"></i> Quadrotor Control (STM32)</h3>
+        <p>LQR controller on STM32 drone; MATLAB/FreeRTOS/Embedded C.</p>
+        <div><span class="tools-tag">MATLAB</span><span class="tools-tag">FreeRTOS</span><span class="tools-tag">C</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION + CERTIFICATIONS + INTERESTS combined -->
+  <section class="journey-section">
+    <div class="section-title"><i class="fas fa-university"></i> education & credentials</div>
+    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+      <div><i class="fas fa-graduation-cap small-icon"></i> <strong>MSc Systems, Control, Mechatronics</strong> – Chalmers (2024–2026) · Autonomous systems track · ML, CV, optimization</div>
+      <div><i class="fas fa-graduation-cap small-icon"></i> <strong>B.Tech Electronics & Communication</strong> – Amrita (2020–2024) · CV, signal processing, networks</div>
+      <hr>
+      <div><i class="fas fa-certificate small-icon"></i> <strong>PINNs for Geotechnical Applications</strong> – RWTH Aachen (hackathon, 3 ECTS)</div>
+      <div><i class="fas fa-certificate small-icon"></i> <strong>Udacity Self‑Driving Car Engineer</strong> – object detection, sensor fusion, motion planning, control (Python/C++)</div>
     </div>
     <hr>
-    <p style="text-align: center;">📬 based in seattle · open to collab or just a coffee chat</p>
+    <div style="display: flex; flex-wrap: wrap; gap: 2rem;">
+      <div><i class="fas fa-heart small-icon"></i> <strong>interests</strong> embedded · control · ML · robotics</div>
+      <div><i class="fas fa-globe small-icon"></i> <strong>languages</strong> English (C1) · Swedish (limited working)</div>
+    </div>
+  </section>
+
+  <!-- HOBBIES / ENTREPRENEURIAL / AMBASSADOR / STARTUP HUB -->
+  <section class="journey-section">
+    <div class="section-title"><i class="fas fa-lightbulb"></i> beyond work</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 1.5rem;">
+      <span class="interest-pill"><i class="fab fa-microsoft"></i> Microsoft startup hub – $1000 Azure credit</span>
+      <span class="interest-pill"><i class="fas fa-handshake"></i> CHARM Fair 2025 – corporate host</span>
+      <span class="interest-pill"><i class="fas fa-flag"></i> Program ambassador @Chalmers</span>
+    </div>
+    <p style="margin-top: 1.5rem;"><i class="fas fa-robot"></i> <strong>hobbies:</strong> diy electronics, hiking, chess, startup tinkering</p>
+    <!-- small hobby images (optional) -->
+    <div style="display: flex; gap: 0.8rem; margin-top: 1rem;">
+      <img src="https://placecats.com/100/100?random=501" style="border-radius: 30px; width:70px; border:2px solid #2dd4bf;" alt="hobby">
+      <img src="https://placecats.com/100/100?random=502" style="border-radius: 30px; width:70px; border:2px solid #2dd4bf;" alt="hobby">
+    </div>
+  </section>
+
+  <!-- CONTACT + REFERENCE NOTE -->
+  <section class="journey-section">
+    <div class="section-title"><i class="fas fa-paper-plane"></i> connect</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center;">
+      <span class="interest-pill"><i class="fab fa-github"></i> @alexrivera</span>
+      <span class="interest-pill"><i class="fab fa-linkedin"></i> alex-rivera-chalmers</span>
+      <span class="interest-pill"><i class="fas fa-envelope"></i> alex.r@chalmers.se</span>
+    </div>
+    <hr>
+    <p style="text-align: center;"><i class="fas fa-file-signature"></i> References available upon request · based in Gothenburg, SE · open for entry‑level embedded/control/ML roles</p>
+  </section>
+
+  <!-- tiny footer journey note -->
+  <div class="footer-note">
+    <i class="fa-regular fa-compass"></i> mechatronics · embedded · ML · CV · full stack — a technical journey
   </div>
 
-  <!-- tiny footer note -->
-  <div class="foot-note">
-    <i class="fa-regular fa-compass"></i> every section is a stop — thanks for walking the path 
-  </div>
-
-  <!-- replace image placeholders with your own, keep the journey style -->
-  <!-- the path line stays connected through colours and icons -->
+  <!-- all data from the resume PDF is included; replace placeholder images and github links with actual ones -->
 </div>
-
-<!-- optional: smooth scroll extra for internal links (not needed) but adds feel -->
 </body>
 </html>
