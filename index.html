@@ -3,103 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>embedded · control · ml · portfolio</title>
-  <!-- Font Awesome 6 -->
+  <title>embedded · ml · perception · portfolio</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-      background: #0c111d;  /* deep tech background */
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #0c111d;
       color: #e2e8f0;
       line-height: 1.6;
       position: relative;
     }
-
-    /* ---------- TECH BACKGROUND (mechatronics, embedded, ml, cv) ---------- */
     body::before {
       content: "";
       position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background-image: 
-        /* pcb traces */
-        linear-gradient(90deg, rgba(0, 255, 196, 0.03) 1px, transparent 1px),
-        linear-gradient(0deg, rgba(0, 200, 255, 0.03) 1px, transparent 1px),
-        /* vias / pads */
+      inset: 0;
+      background-image:
+        linear-gradient(90deg, rgba(0,255,196,0.03) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(0,200,255,0.03) 1px, transparent 1px),
         radial-gradient(circle at 20% 30%, #00ffc030 1px, transparent 1px),
-        radial-gradient(circle at 75% 70%, #40ffc020 2px, transparent 2px),
-        repeating-linear-gradient(45deg, #0ff020 0px, #0ff020 1px, transparent 1px, transparent 12px);
-      background-size: 60px 60px, 60px 60px, 80px 80px, 120px 120px, 30px 30px;
-      pointer-events: none;
-      z-index: 0;
+        radial-gradient(circle at 75% 70%, #40ffc020 2px, transparent 2px);
+      background-size: 60px 60px, 60px 60px, 80px 80px, 120px 120px;
       opacity: 0.25;
-    }
-
-    /* floating domain icons */
-    body::after {
-      content: "⚡🔧🤖📟🧠⚙️📡🔬🔌🖥️";
-      position: fixed;
-      bottom: 15px;
-      right: 10px;
-      font-size: 4rem;
-      opacity: 0.04;
-      rotate: -3deg;
-      white-space: pre;
       z-index: 0;
       pointer-events: none;
     }
-
     .portfolio-wrapper {
       position: relative;
       z-index: 5;
       max-width: 1300px;
       margin: 0 auto;
-      padding: 2rem 2rem 3rem;
+      padding: 2rem 2rem 4rem;
     }
-
-    /* section cards — glass with border tech glow */
     .journey-section {
-      background: rgba(10, 20, 35, 0.8);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      background: rgba(10,20,35,0.85);
+      backdrop-filter: blur(10px);
       border: 1px solid #2dd4bf30;
       border-radius: 42px 14px 42px 14px;
-      box-shadow: 0 20px 40px -20px #000000dd, 0 0 0 1px #2dd4bf20 inset;
+      box-shadow: 0 20px 40px -20px #000, 0 0 0 1px #2dd4bf20 inset;
       margin-bottom: 3.5rem;
-      padding: 2.2rem 2.2rem;
-      transition: 0.2s;
+      padding: 2.4rem 2.4rem;
+      transition: 0.3s;
     }
-
     .journey-section:hover {
-      border-color: #2dd4bf80;
-      box-shadow: 0 25px 45px -20px #00ffc040, 0 0 0 2px #2dd4bf30 inset;
+      border-color: #2dd4bf70;
+      box-shadow: 0 25px 50px -20px #00ffc040;
     }
-
     .section-title {
       display: flex;
       align-items: center;
       gap: 12px;
       font-size: 2rem;
       font-weight: 600;
-      letter-spacing: -0.02em;
+      color: #e6f7ff;
       border-bottom: 2px solid #2dd4bf40;
       padding-bottom: 0.6rem;
       margin-bottom: 1.8rem;
-      color: #e6f7ff;
-      text-shadow: 0 0 6px #2dd4bf;
     }
-
-    .section-title i {
-      color: #2dd4bf;
-      font-size: 2rem;
-    }
-
-    /* intro row with photo + summary */
+    .section-title i { color: #2dd4bf; font-size: 2.1rem; }
     .intro-row {
       display: flex;
       flex-wrap: wrap;
@@ -108,23 +69,12 @@
     }
     .photo-frame {
       flex: 0 0 160px;
-      border-radius: 40% 60% 30% 70% / 50% 40% 60% 50%;
+      border-radius: 40% 60% 30% 70%;
       overflow: hidden;
       border: 3px solid #2dd4bf;
-      box-shadow: 0 0 20px #2dd4bf;
+      box-shadow: 0 0 25px #2dd4bf;
     }
-    .photo-frame img {
-      width: 160px;
-      height: 160px;
-      object-fit: cover;
-      display: block;
-    }
-    .intro-text h1 {
-      font-size: 2.6rem;
-      background: linear-gradient(145deg, #9ffff5, #b5cbff, #cdb5ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+    .photo-frame img { width: 160px; height: 160px; object-fit: cover; }
     .domain-badge {
       display: inline-block;
       background: #112f3e;
@@ -135,260 +85,171 @@
       font-size: 0.85rem;
       color: #a0f0e6;
     }
-
-    .grid-2col {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-      margin-top: 1rem;
-    }
-
     .resume-card {
       background: #0f1d2fcc;
       border: 1px solid #2a6d71;
       border-radius: 32px 8px 32px 8px;
-      padding: 1.4rem;
-      transition: 0.15s;
+      padding: 1.6rem;
+      transition: 0.2s;
     }
     .resume-card:hover {
       border-color: #2dd4bf;
       background: #173d4dcc;
-      transform: translateY(-5px);
+      transform: translateY(-4px);
     }
-
     .tools-tag {
       background: #0f2e36;
       border: 1px solid #2dd4bf70;
       border-radius: 30px;
-      padding: 0.2rem 1rem;
-      font-size: 0.7rem;
-      display: inline-block;
+      padding: 0.25rem 1rem;
+      font-size: 0.75rem;
       margin: 0.2rem 0.3rem 0.2rem 0;
       color: #b0f5ec;
-    }
-
-    .links a {
-      color: #9fc5ff;
-      text-decoration: none;
-      border-bottom: 1px dashed #2dd4bf;
-      margin-right: 1.2rem;
-      font-weight: 500;
-    }
-    .links i {
-      color: #2dd4bf;
-      margin-right: 0.3rem;
-    }
-
-    .small-icon {
-      color: #2dd4bf;
-      width: 1.8rem;
       display: inline-block;
     }
-
-    .cert-item {
-      background: #0c2635b0;
-      border-left: 6px solid #2dd4bf;
-      border-radius: 24px 4px 24px 4px;
-      padding: 0.8rem 1.5rem;
-      margin: 1rem 0;
+    .grid-2col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
     }
-
-    .interest-pill {
-      background: #123d44;
-      border-radius: 40px;
-      padding: 0.5rem 1.5rem;
-      border: 1px solid #2dd4bf60;
-    }
-
-    .footer-note {
-      text-align: center;
-      color: #6b9faa;
-      margin-top: 4rem;
-      font-style: italic;
-    }
-    hr {
-      border: 0.5px solid #2dd4bf30;
-      margin: 1.8rem 0;
-    }
-
-    /* responsive */
     @media (max-width: 700px) {
-      .intro-row { flex-direction: column; align-items: start; }
+      .intro-row { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
+
 <div class="portfolio-wrapper">
 
-  <!-- INTRO with PHOTO (based on resume summary) -->
+  <!-- INTRO -->
   <section class="journey-section">
     <div class="intro-row">
       <div class="photo-frame">
-        <!-- using resume initial, replace with actual photo -->
-        <img src="https://ui-avatars.com/api/?background=0f3b44&color=fff&size=160&name=AR" alt="profile">
+        <img src="https://ui-avatars.com/api/?background=0f3b44&color=fff&size=160&name=DK" alt="Dharunkumar">
       </div>
       <div>
-        <h1>Alex Rivera</h1>
-        <div style="margin: 0.5rem 0 1rem;">
+        <h1>Dharunkumar Senthilkumar</h1>
+        <div style="margin: 0.6rem 0 1.2rem;">
           <span class="domain-badge"><i class="fas fa-microchip"></i> embedded</span>
-          <span class="domain-badge"><i class="fas fa-sliders-h"></i> control</span>
-          <span class="domain-badge"><i class="fas fa-brain"></i> ML</span>
-          <span class="domain-badge"><i class="fas fa-robot"></i> robotics</span>
+          <span class="domain-badge"><i class="fas fa-brain"></i> ml</span>
           <span class="domain-badge"><i class="fas fa-eye"></i> computer vision</span>
+          <span class="domain-badge"><i class="fas fa-robot"></i> perception</span>
+          <span class="domain-badge"><i class="fas fa-sliders-h"></i> control</span>
         </div>
-        <p style="max-width: 600px;"><i class="fas fa-quote-left" style="color:#2dd4bf;"></i> 
-          Master's student in Systems, Control and Mechatronics (Autonomous Systems track) at Chalmers. 
-          Seeking entry-level roles in embedded systems, control engineering, or machine learning. 
-          Hands-on with Python, C/C++, STM32, FreeRTOS, and CI/CD in robotics, aerospace, and automotive projects. 
-          Eligible for Swedish post-study work permit (summer 2026).
+        <p style="max-width: 620px; font-size:1.05rem;">
+          Master's student in Autonomous Systems at Chalmers University of Technology.<br>
+          Building intelligent systems at the intersection of embedded hardware, machine learning and computer vision.
+          Currently doing Master's thesis at ESAB on time-series ML + CV and flight software for Team CAESAR rocket project.
+          Open to industrial PhD and R&D roles in Sweden (Gothenburg / Stockholm).
         </p>
       </div>
     </div>
-    <div style="text-align: center; font-size: 1.8rem; opacity: 0.3; margin-top: 1rem;">⚡🔧⚙️</div>
   </section>
 
-  <!-- SKILLS (languages, tools, ML, embedded) -->
+  <!-- SKILLS -->
   <section class="journey-section">
-    <div class="section-title"><i class="fas fa-code"></i> skills & toolchain</div>
-    <div style="display: flex; flex-wrap: wrap; gap: 1.8rem; justify-content: space-between;">
-      <div style="min-width: 200px;">
-        <h3><i class="fas fa-terminal" style="color:#2dd4bf;"></i> languages</h3>
-        <p>Python · C/C++ · Embedded C · MATLAB/Simulink · JavaScript · TypeScript</p>
+    <div class="section-title"><i class="fas fa-code"></i> skills &amp; toolchain</div>
+    <div style="display:flex; flex-wrap:wrap; gap:2rem; justify-content:space-between;">
+      <div>
+        <h3><i class="fas fa-terminal"></i> languages</h3>
+        <p>Python · C/C++ · Embedded C · MATLAB/Simulink</p>
       </div>
-      <div style="min-width: 200px;">
-        <h3><i class="fas fa-tools"></i> tools & OS</h3>
-        <p>Git · Docker · Yarn · Google Test · Pytest · GitHub Actions · ROS2 · Linux · FreeRTOS · CAN</p>
+      <div>
+        <h3><i class="fas fa-tools"></i> tools &amp; frameworks</h3>
+        <p>Git · Docker · ROS2 · FreeRTOS · GitHub Actions · Linux · CAN</p>
       </div>
-      <div style="min-width: 200px;">
-        <h3><i class="fas fa-database"></i> databases / ml</h3>
-        <p>MongoDB · Elasticsearch · Kibana · PyTorch · TensorFlow · OpenCV · FiftyOne · Prefect</p>
+      <div>
+        <h3><i class="fas fa-brain"></i> machine learning &amp; vision</h3>
+        <p>PyTorch · TensorFlow · OpenCV · scikit-learn · LSTM · Transformer · FiftyOne</p>
       </div>
     </div>
   </section>
 
-  <!-- WORK EXPERIENCE (interns, research, rocket project) -->
+  <!-- WORK EXPERIENCE -->
   <section class="journey-section">
-    <div class="section-title"><i class="fas fa-briefcase"></i> work & research</div>
+    <div class="section-title"><i class="fas fa-briefcase"></i> work &amp; research</div>
     <div class="grid-2col">
-      <!-- research assistant 1 (current) -->
+
       <div class="resume-card">
-        <h3><i class="fas fa-flask"></i> Research Assistant – Chalmers <span style="color:#8dd0ff;">(Jan 2026 – present)</span></h3>
-        <p>Migrated MongoDB to Elasticsearch, built Kibana plugin + FastAPI ingestion for quantum workflows.</p>
-        <div><span class="tools-tag">Python</span><span class="tools-tag">MongoDB</span><span class="tools-tag">Docker</span><span class="tools-tag">Elasticsearch</span><span class="tools-tag">Kibana</span><span class="tools-tag">React</span><span class="tools-tag">Node.js</span></div>
+        <h3><i class="fas fa-graduation-cap"></i> Master Thesis Student – ESAB <span style="color:#8dd0ff;">(Jan 2026 – present)</span></h3>
+        <p>Developing classical computer vision pipelines (OpenCV) on high-speed welding images and deep learning time-series models to predict arc characteristics from sensor data (camera-free real-time control).</p>
+        <div><span class="tools-tag">Python</span><span class="tools-tag">OpenCV</span><span class="tools-tag">PyTorch</span><span class="tools-tag">NumPy</span><span class="tools-tag">Pandas</span><span class="tools-tag">Linux</span></div>
       </div>
-      <!-- master thesis ESAB -->
+
       <div class="resume-card">
-        <h3><i class="fas fa-graduation-cap"></i> Master Thesis @ ESAB <span style="color:#8dd0ff;">(Jan 2026 – present)</span></h3>
-        <p>CV models (OpenCV) on high-speed welding images; predict arc characteristics from sensor data (camera‑free).</p>
-        <div><span class="tools-tag">OpenCV</span><span class="tools-tag">PyTorch</span><span class="tools-tag">NumPy</span><span class="tools-tag">Pandas</span><span class="tools-tag">FiftyOne</span><span class="tools-tag">Prefect</span><span class="tools-tag">Linux</span></div>
+        <h3><i class="fas fa-rocket"></i> Software Engineer – EUROC 2026 (Team CAESAR) <span style="color:#8dd0ff;">(Sept 2025 – present)</span></h3>
+        <p>Real-time flight computer software: state machines, FreeRTOS scheduling, sensor integration, CI/CD pipelines and system testing.</p>
+        <div><span class="tools-tag">C/C++</span><span class="tools-tag">FreeRTOS</span><span class="tools-tag">GitHub Actions</span><span class="tools-tag">ROS2</span></div>
       </div>
-      <!-- EUROC rocket -->
+
       <div class="resume-card">
-        <h3><i class="fas fa-rocket"></i> Software Engineer – EUROC 2026 (CAESAR)</h3>
-        <p>Flight computer: FreeRTOS scheduling, state machines, CI/CD, testing, GUI.</p>
-        <div><span class="tools-tag">FreeRTOS</span><span class="tools-tag">C/C++</span><span class="tools-tag">Google Test</span><span class="tools-tag">GitHub Actions</span><span class="tools-tag">React</span><span class="tools-tag">Node.js</span></div>
+        <h3><i class="fas fa-robot"></i> Research Assistant – Chalmers University <span style="color:#8dd0ff;">(Dec 2024 – Sept 2025)</span></h3>
+        <p>LLM integration with social robots (Misty & Pepper) and OpenCV-based perception for human-robot interaction studies.</p>
+        <div><span class="tools-tag">Python</span><span class="tools-tag">OpenCV</span><span class="tools-tag">Flask</span></div>
       </div>
-      <!-- summer intern resolve EV -->
-      <div class="resume-card">
-        <h3><i class="fas fa-car"></i> Summer Intern – Resolve EV <span style="color:#8dd0ff;">(July–Aug 2025)</span></h3>
-        <p>STM32 quick‑charging module with VW ID.4 protocol over CAN.</p>
-        <div><span class="tools-tag">C/C++</span><span class="tools-tag">STM32</span><span class="tools-tag">CAN</span></div>
-      </div>
-      <!-- research assistant 2 (LLM+robots) -->
-      <div class="resume-card">
-        <h3><i class="fas fa-robot"></i> Research Assistant – Chalmers <span style="color:#8dd0ff;">(Dec 2024–Sept 2025)</span></h3>
-        <p>LLM (Gemini) integration with Misty/Pepper robots; OpenCV detection; Electron/Flask interface.</p>
-        <div><span class="tools-tag">Python</span><span class="tools-tag">OpenCV</span><span class="tools-tag">LLMs</span><span class="tools-tag">Flask</span><span class="tools-tag">JavaScript</span><span class="tools-tag">Electron</span></div>
-      </div>
+
     </div>
   </section>
 
-  <!-- PROJECTS (robust control, sensor fusion, battery, glove, quadrotor) -->
+  <!-- PROJECTS (now in same format as Work Experience) -->
   <section class="journey-section">
-    <div class="section-title"><i class="fas fa-code-branch"></i> key projects</div>
+    <div class="section-title"><i class="fas fa-code-branch"></i> selected projects</div>
     <div class="grid-2col">
+
       <div class="resume-card">
-        <h3><i class="fas fa-shield-alt"></i> Robust Mobile Robot Control</h3>
-        <p>Adversarial training with pure pursuit / nonlinear MPC (warm‑start CEM); improved success rate 34%→56% (74% with pursuit).</p>
-        <div><span class="tools-tag">PyTorch</span><span class="tools-tag">Python</span></div>
-        <div class="links"><a href="#"><i class="fab fa-github"></i> GitHub</a></div>
-      </div>
-      <div class="resume-card">
-        <h3><i class="fas fa-satellite"></i> Sensor Fusion & Tracking</h3>
-        <p>LiDAR/camera fusion (Waymo); EKF for 3D vehicle tracking in CARLA.</p>
+        <h3><i class="fas fa-satellite"></i> Sensor Fusion and Tracking</h3>
+        <p>Fused LiDAR + camera data from Waymo Open Dataset; implemented Extended Kalman Filter for 3D vehicle tracking in CARLA simulator.</p>
         <div><span class="tools-tag">TensorFlow</span><span class="tools-tag">Python</span><span class="tools-tag">ROS2</span><span class="tools-tag">C++</span><span class="tools-tag">OpenCV</span></div>
-        <div class="links"><a href="#"><i class="fab fa-github"></i> repo</a></div>
+        <div style="margin-top:0.8rem;"><a href="https://github.com/Dharun235/sensor-fusion-and-non-linear-filtering-project" style="color:#9fc5ff; text-decoration:underline;">GitHub →</a></div>
       </div>
+
       <div class="resume-card">
-        <h3><i class="fas fa-battery-three-quarters"></i> Battery health prediction</h3>
-        <p>LSTM/GRU/CNN‑LSTM/Transformer for Li‑ion RUL prediction; Transformer+weighted pooling best.</p>
+        <h3><i class="fas fa-battery-three-quarters"></i> Battery Health Prediction</h3>
+        <p>Deep learning models (LSTM, GRU, CNN-LSTM, Transformer) in PyTorch for Li-ion capacity degradation and RUL from time-series data. Transformer with weighted pooling performed best.</p>
         <div><span class="tools-tag">PyTorch</span><span class="tools-tag">NumPy</span><span class="tools-tag">Pandas</span></div>
-        <div class="links"><a href="#"><i class="fab fa-github"></i> code</a></div>
+        <div style="margin-top:0.8rem;"><a href="https://github.com/Dharun235/Battery-health-prediction" style="color:#9fc5ff; text-decoration:underline;">GitHub →</a></div>
       </div>
+
       <div class="resume-card">
-        <h3><i class="fas fa-hand-paper"></i> Smart Hand Wearable (Speech Impaired)</h3>
-        <p>Flex sensor glove → Bluetooth text; voltage divider + amplifier. <a href="#" style="color:#9fd9ff;">Publication</a></p>
-        <div><span class="tools-tag">Embedded C</span><span class="tools-tag">circuits</span></div>
+        <h3><i class="fas fa-shield-alt"></i> Robust Mobile Robot Control through Adversarial Training</h3>
+        <p>Extended RL navigation framework with adversarial agent using pure pursuit and nonlinear MPC; improved success rate from 34% to 56% (74% with pure pursuit).</p>
+        <div><span class="tools-tag">PyTorch</span><span class="tools-tag">Python</span></div>
+        <div style="margin-top:0.8rem;"><a href="https://github.com/KilianFt/ROAM/tree/dharun_mpc" style="color:#9fc5ff; text-decoration:underline;">GitHub →</a></div>
       </div>
+
       <div class="resume-card">
-        <h3><i class="fas fa-helicopter"></i> Quadrotor Control (STM32)</h3>
-        <p>LQR controller on STM32 drone; MATLAB/FreeRTOS/Embedded C.</p>
-        <div><span class="tools-tag">MATLAB</span><span class="tools-tag">FreeRTOS</span><span class="tools-tag">C</span></div>
+        <h3><i class="fas fa-hand-paper"></i> Machine Learning Enhanced Smart Hand-Wearable</h3>
+        <p>Collected 160k flex-sensor datapoints from 100 subjects; trained ensemble classifiers and improved gesture recognition accuracy from 79% to 91%.</p>
+        <div><span class="tools-tag">scikit-learn</span><span class="tools-tag">Python</span></div>
       </div>
+
     </div>
   </section>
 
-  <!-- EDUCATION + CERTIFICATIONS + INTERESTS combined -->
+  <!-- EDUCATION & CREDENTIALS -->
   <section class="journey-section">
-    <div class="section-title"><i class="fas fa-university"></i> education & credentials</div>
-    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-      <div><i class="fas fa-graduation-cap small-icon"></i> <strong>MSc Systems, Control, Mechatronics</strong> – Chalmers (2024–2026) · Autonomous systems track · ML, CV, optimization</div>
-      <div><i class="fas fa-graduation-cap small-icon"></i> <strong>B.Tech Electronics & Communication</strong> – Amrita (2020–2024) · CV, signal processing, networks</div>
-      <hr>
-      <div><i class="fas fa-certificate small-icon"></i> <strong>PINNs for Geotechnical Applications</strong> – RWTH Aachen (hackathon, 3 ECTS)</div>
-      <div><i class="fas fa-certificate small-icon"></i> <strong>Udacity Self‑Driving Car Engineer</strong> – object detection, sensor fusion, motion planning, control (Python/C++)</div>
-    </div>
-    <hr>
-    <div style="display: flex; flex-wrap: wrap; gap: 2rem;">
-      <div><i class="fas fa-heart small-icon"></i> <strong>interests</strong> embedded · control · ML · robotics</div>
-      <div><i class="fas fa-globe small-icon"></i> <strong>languages</strong> English (C1) · Swedish (limited working)</div>
+    <div class="section-title"><i class="fas fa-university"></i> education &amp; credentials</div>
+    <div style="display:flex; flex-direction:column; gap:1.4rem; font-size:1.05rem;">
+      <div><strong>MSc Systems, Control and Mechatronics (Autonomous Systems track)</strong> — Chalmers University of Technology (2024–2026)</div>
+      <div><strong>B.Tech Electronics and Communication Engineering</strong> — Amrita School of Engineering (2020–2024)</div>
+      <hr style="border-color:#2dd4bf30;">
+      <div><i class="fas fa-certificate" style="color:#2dd4bf;"></i> Udacity Self-Driving Car Engineer Nanodegree — object detection, sensor fusion, tracking, control (Python/C++)</div>
     </div>
   </section>
 
-  <!-- HOBBIES / ENTREPRENEURIAL / AMBASSADOR / STARTUP HUB -->
+  <!-- CONNECT -->
   <section class="journey-section">
-    <div class="section-title"><i class="fas fa-lightbulb"></i> beyond work</div>
-    <div style="display: flex; flex-wrap: wrap; gap: 1.5rem;">
-      <span class="interest-pill"><i class="fab fa-microsoft"></i> Microsoft startup hub – $1000 Azure credit</span>
-      <span class="interest-pill"><i class="fas fa-handshake"></i> CHARM Fair 2025 – corporate host</span>
-      <span class="interest-pill"><i class="fas fa-flag"></i> Program ambassador @Chalmers</span>
+    <div class="section-title"><i class="fas fa-paper-plane"></i> let's connect</div>
+    <div style="display:flex; flex-wrap:wrap; gap:2rem; justify-content:center; font-size:1.1rem;">
+      <a href="https://github.com/Dharun235" style="color:#9fc5ff; text-decoration:none;"><i class="fab fa-github"></i> github.com/Dharun235</a>
+      <a href="https://www.linkedin.com/in/dharun-kumar20/" style="color:#9fc5ff; text-decoration:none;"><i class="fab fa-linkedin"></i> linkedin.com/in/dharun-kumar20</a>
+      <a href="mailto:dharunkumar.senthilkumar9@gmail.com" style="color:#9fc5ff; text-decoration:none;"><i class="fas fa-envelope"></i> dharunkumar.senthilkumar9@gmail.com</a>
     </div>
-    <p style="margin-top: 1.5rem;"><i class="fas fa-robot"></i> <strong>hobbies:</strong> diy electronics, hiking, chess, startup tinkering</p>
-    <!-- small hobby images (optional) -->
-    <div style="display: flex; gap: 0.8rem; margin-top: 1rem;">
-      <img src="https://placecats.com/100/100?random=501" style="border-radius: 30px; width:70px; border:2px solid #2dd4bf;" alt="hobby">
-      <img src="https://placecats.com/100/100?random=502" style="border-radius: 30px; width:70px; border:2px solid #2dd4bf;" alt="hobby">
-    </div>
+    <p style="text-align:center; margin-top:2rem; color:#6b9faa;">
+      Based in Gothenburg, Sweden · Open to Industrial PhD and R&D roles in embedded ML, perception and robotics
+    </p>
   </section>
 
-  <!-- CONTACT + REFERENCE NOTE -->
-  <section class="journey-section">
-    <div class="section-title"><i class="fas fa-paper-plane"></i> connect</div>
-    <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center;">
-      <span class="interest-pill"><i class="fab fa-github"></i> @alexrivera</span>
-      <span class="interest-pill"><i class="fab fa-linkedin"></i> alex-rivera-chalmers</span>
-      <span class="interest-pill"><i class="fas fa-envelope"></i> alex.r@chalmers.se</span>
-    </div>
-    <hr>
-    <p style="text-align: center;"><i class="fas fa-file-signature"></i> References available upon request · based in Gothenburg, SE · open for entry‑level embedded/control/ML roles</p>
-  </section>
-
-  <!-- tiny footer journey note -->
-  <div class="footer-note">
-    <i class="fa-regular fa-compass"></i> mechatronics · embedded · ML · CV · full stack — a technical journey
-  </div>
-
-  <!-- all data from the resume PDF is included; replace placeholder images and github links with actual ones -->
 </div>
 </body>
 </html>
