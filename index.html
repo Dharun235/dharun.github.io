@@ -28,6 +28,59 @@
       z-index: 0;
       pointer-events: none;
     }
+    /* Sidebar Navigation */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100vh;
+      width: 60px;
+      background: rgba(10,20,35,0.95);
+      backdrop-filter: blur(10px);
+      border-right: 1px solid #2dd4bf30;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding-top: 2rem;
+      transition: width 0.3s ease;
+    }
+    .sidebar:hover {
+      width: 200px;
+    }
+    .nav-item {
+      padding: 1rem;
+      color: #a0f0e6;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 0.9rem;
+      transition: 0.2s;
+      border-left: 3px solid transparent;
+      margin: 0.2rem 0;
+    }
+    .nav-item:hover,
+    .nav-item.active {
+      color: #2dd4bf;
+      background: rgba(45,212,191,0.1);
+      border-left-color: #2dd4bf;
+    }
+    .nav-item i {
+      font-size: 1.2rem;
+      min-width: 20px;
+    }
+    .nav-item span {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .sidebar:hover .nav-item span {
+      opacity: 1;
+    }
+    /* Main Content with Sidebar Offset */
+    .main-content {
+      margin-left: 60px;
+    }
     .portfolio-wrapper {
       position: relative;
       z-index: 5;
@@ -44,6 +97,7 @@
       margin-bottom: 3.5rem;
       padding: 2.4rem 2.4rem;
       transition: 0.3s;
+      scroll-margin-top: 80px; /* For smooth scroll offset */
     }
     .journey-section:hover {
       border-color: #2dd4bf70;
@@ -112,144 +166,384 @@
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 2rem;
     }
+    /* Game Styles */
+    .game-section {
+      background: rgba(20,30,45,0.95);
+      backdrop-filter: blur(15px);
+      border: 2px solid #2dd4bf50;
+      border-radius: 24px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .game-title {
+      font-size: 1.5rem;
+      color: #2dd4bf;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .game-board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      max-width: 240px;
+      margin: 0 auto;
+      aspect-ratio: 1;
+    }
+    .mole-hole {
+      background: radial-gradient(circle, #1a2a3a 0%, #0f1d2a 100%);
+      border: 2px solid #2dd4bf30;
+      border-radius: 50%;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.1s, box-shadow 0.2s;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .mole-hole:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #2dd4bf40;
+    }
+    .mole-hole.active {
+      background: radial-gradient(circle, #2dd4bf40 0%, #0f1d2a 100%);
+      border-color: #2dd4bf;
+    }
+    .mole {
+      width: 60%;
+      height: 60%;
+      background: #8b4513;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      position: relative;
+      transform: translateY(20px);
+      transition: transform 0.2s ease;
+      z-index: 10;
+    }
+    .mole.popped {
+      transform: translateY(30px) scale(0.8);
+    }
+    .mole::before {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 8px;
+      height: 8px;
+      background: #000;
+      border-radius: 50%;
+      box-shadow: 20px -5px 0 0 #000;
+    }
+    .score {
+      font-size: 1.2rem;
+      color: #00ff88;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+    .start-btn {
+      background: #2dd4bf;
+      color: #0c111d;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 24px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: 0.2s;
+    }
+    .start-btn:hover {
+      background: #22b8a3;
+      transform: scale(1.05);
+    }
     @media (max-width: 700px) {
       .intro-row { flex-direction: column; align-items: flex-start; }
+      .sidebar { width: 50px; }
+      .sidebar:hover { width: 180px; }
+      .main-content { margin-left: 50px; }
+      .game-board { max-width: 180px; }
+    }
+    @media (max-width: 500px) {
+      .sidebar { display: none; } /* Hide sidebar on very small screens */
+      .main-content { margin-left: 0; }
     }
   </style>
 </head>
 <body>
+  <!-- Sidebar Navigation -->
+  <nav class="sidebar" id="sidebar">
+    <a href="#game" class="nav-item"><i class="fas fa-gamepad"></i><span>Play!</span></a>
+    <a href="#intro" class="nav-item active"><i class="fas fa-user"></i><span>About</span></a>
+    <a href="#skills" class="nav-item"><i class="fas fa-code"></i><span>Skills</span></a>
+    <a href="#work" class="nav-item"><i class="fas fa-briefcase"></i><span>Work</span></a>
+    <a href="#projects" class="nav-item"><i class="fas fa-code-branch"></i><span>Projects</span></a>
+    <a href="#education" class="nav-item"><i class="fas fa-university"></i><span>Education</span></a>
+    <a href="#connect" class="nav-item"><i class="fas fa-paper-plane"></i><span>Connect</span></a>
+  </nav>
 
-<div class="portfolio-wrapper">
-
-  <!-- INTRO -->
-  <section class="journey-section">
-    <div class="intro-row">
-      <div class="photo-frame">
-        <img src="https://ui-avatars.com/api/?background=0f3b44&color=fff&size=160&name=DK" alt="Dharunkumar">
-      </div>
-      <div>
-        <h1>Dharunkumar Senthilkumar</h1>
-        <div style="margin: 0.6rem 0 1.2rem;">
-          <span class="domain-badge"><i class="fas fa-microchip"></i> embedded</span>
-          <span class="domain-badge"><i class="fas fa-brain"></i> ml</span>
-          <span class="domain-badge"><i class="fas fa-eye"></i> computer vision</span>
-          <span class="domain-badge"><i class="fas fa-robot"></i> perception</span>
-          <span class="domain-badge"><i class="fas fa-sliders-h"></i> control</span>
+  <div class="main-content">
+    <div class="portfolio-wrapper">
+      <!-- GAME -->
+      <section class="journey-section game-section" id="game">
+        <div class="game-title">
+          <i class="fas fa-gamepad"></i> Whack-a-Mole Stall FUN
         </div>
-        <p style="max-width: 620px; font-size:1.05rem;">
-          Master's student in Autonomous Systems at Chalmers University of Technology.<br>
-          Building intelligent systems at the intersection of embedded hardware, machine learning and computer vision.
-          Currently doing Master's thesis at ESAB on time-series ML + CV and flight software for Team CAESAR rocket project.
-          Open to industrial PhD and R&D roles in Sweden (Gothenburg / Stockholm).
+        <div class="game-board" id="gameBoard">
+          <div class="mole-hole" data-hole="0"></div>
+          <div class="mole-hole" data-hole="1"></div>
+          <div class="mole-hole" data-hole="2"></div>
+          <div class="mole-hole" data-hole="3"></div>
+          <div class="mole-hole" data-hole="4"></div>
+          <div class="mole-hole" data-hole="5"></div>
+          <div class="mole-hole" data-hole="6"></div>
+          <div class="mole-hole" data-hole="7"></div>
+          <div class="mole-hole" data-hole="8"></div>
+        </div>
+        <button class="start-btn" id="startBtn">Start Game!</button>
+        <div class="score" id="score">Score: 0</div>
+      </section>
+
+      <!-- INTRO -->
+      <section class="journey-section" id="intro">
+        <div class="intro-row">
+          <div class="photo-frame">
+            <img src="https://ui-avatars.com/api/?background=0f3b44&color=fff&size=160&name=DK" alt="Dharunkumar">
+          </div>
+          <div>
+            <h1>Dharunkumar Senthilkumar</h1>
+            <div style="margin: 0.6rem 0 1.2rem;">
+              <span class="domain-badge"><i class="fas fa-microchip"></i> embedded</span>
+              <span class="domain-badge"><i class="fas fa-brain"></i> ml</span>
+              <span class="domain-badge"><i class="fas fa-eye"></i> computer vision</span>
+              <span class="domain-badge"><i class="fas fa-robot"></i> perception</span>
+              <span class="domain-badge"><i class="fas fa-sliders-h"></i> control</span>
+            </div>
+            <p style="max-width: 620px; font-size:1.05rem;">
+              Master's student in Autonomous Systems at Chalmers University of Technology.<br>
+              Building intelligent systems at the intersection of embedded hardware, machine learning and computer vision.
+              Currently doing Master's thesis at ESAB on time-series ML + CV and flight software for Team CAESAR rocket project.
+              Open to industrial PhD and R&D roles in Sweden (Gothenburg / Stockholm).
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SKILLS -->
+      <section class="journey-section" id="skills">
+        <div class="section-title"><i class="fas fa-code"></i> skills &amp; toolchain</div>
+        <div style="display:flex; flex-wrap:wrap; gap:2rem; justify-content:space-between;">
+          <div>
+            <h3><i class="fas fa-terminal"></i> languages</h3>
+            <p>Python · C/C++ · Embedded C · MATLAB/Simulink</p>
+          </div>
+          <div>
+            <h3><i class="fas fa-tools"></i> tools &amp; frameworks</h3>
+            <p>Git · Docker · ROS2 · FreeRTOS · GitHub Actions · Linux · CAN</p>
+          </div>
+          <div>
+            <h3><i class="fas fa-brain"></i> machine learning &amp; vision</h3>
+            <p>PyTorch · TensorFlow · OpenCV · scikit-learn · LSTM · Transformer · FiftyOne</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- WORK EXPERIENCE -->
+      <section class="journey-section" id="work">
+        <div class="section-title"><i class="fas fa-briefcase"></i> work &amp; research</div>
+        <div class="grid-2col">
+          <div class="resume-card">
+            <h3><i class="fas fa-graduation-cap"></i> Master Thesis Student – ESAB <span style="color:#8dd0ff;">(Jan 2026 – present)</span></h3>
+            <p>Developing classical computer vision pipelines (OpenCV) on high-speed welding images and deep learning time-series models to predict arc characteristics from sensor data (camera-free real-time control).</p>
+            <div><span class="tools-tag">Python</span><span class="tools-tag">OpenCV</span><span class="tools-tag">PyTorch</span><span class="tools-tag">NumPy</span><span class="tools-tag">Pandas</span><span class="tools-tag">Linux</span></div>
+          </div>
+          <div class="resume-card">
+            <h3><i class="fas fa-rocket"></i> Software Engineer – EUROC 2026 (Team CAESAR) <span style="color:#8dd0ff;">(Sept 2025 – present)</span></h3>
+            <p>Real-time flight computer software: state machines, FreeRTOS scheduling, sensor integration, CI/CD pipelines and system testing.</p>
+            <div><span class="tools-tag">C/C++</span><span class="tools-tag">FreeRTOS</span><span class="tools-tag">GitHub Actions</span><span class="tools-tag">ROS2</span></div>
+          </div>
+          <div class="resume-card">
+            <h3><i class="fas fa-robot"></i> Research Assistant – Chalmers University <span style="color:#8dd0ff;">(Dec 2024 – Sept 2025)</span></h3>
+            <p>LLM integration with social robots (Misty & Pepper) and OpenCV-based perception for human-robot interaction studies.</p>
+            <div><span class="tools-tag">Python</span><span class="tools-tag">OpenCV</span><span class="tools-tag">Flask</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROJECTS -->
+      <section class="journey-section" id="projects">
+        <div class="section-title"><i class="fas fa-code-branch"></i> selected projects</div>
+        <div class="grid-2col">
+          <div class="resume-card">
+            <h3><i class="fas fa-satellite"></i> Sensor Fusion and Tracking</h3>
+            <p>Fused LiDAR + camera data from Waymo Open Dataset; implemented Extended Kalman Filter for 3D vehicle tracking in CARLA simulator.</p>
+            <div><span class="tools-tag">TensorFlow</span><span class="tools-tag">Python</span><span class="tools-tag">ROS2</span><span class="tools-tag">C++</span><span class="tools-tag">OpenCV</span></div>
+            <div style="margin-top:0.8rem;"><a href="https://github.com/Dharun235/sensor-fusion-and-non-linear-filtering-project" style="color:#9fc5ff; text-decoration:underline;">GitHub →</a></div>
+          </div>
+          <div class="resume-card">
+            <h3><i class="fas fa-battery-three-quarters"></i> Battery Health Prediction</h3>
+            <p>Deep learning models (LSTM, GRU, CNN-LSTM, Transformer) in PyTorch for Li-ion capacity degradation and RUL from time-series data. Transformer with weighted pooling performed best.</p>
+            <div><span class="tools-tag">PyTorch</span><span class="tools-tag">NumPy</span><span class="tools-tag">Pandas</span></div>
+            <div style="margin-top:0.8rem;"><a href="https://github.com/Dharun235/Battery-health-prediction" style="color:#9fc5ff; text-decoration:underline;">GitHub →</a></div>
+          </div>
+          <div class="resume-card">
+            <h3><i class="fas fa-shield-alt"></i> Robust Mobile Robot Control through Adversarial Training</h3>
+            <p>Extended RL navigation framework with adversarial agent using pure pursuit and nonlinear MPC; improved success rate from 34% to 56% (74% with pure pursuit).</p>
+            <div><span class="tools-tag">PyTorch</span><span class="tools-tag">Python</span></div>
+            <div style="margin-top:0.8rem;"><a href="https://github.com/KilianFt/ROAM/tree/dharun_mpc" style="color:#9fc5ff; text-decoration:underline;">GitHub →</a></div>
+          </div>
+          <div class="resume-card">
+            <h3><i class="fas fa-hand-paper"></i> Machine Learning Enhanced Smart Hand-Wearable</h3>
+            <p>Collected 160k flex-sensor datapoints from 100 subjects; trained ensemble classifiers and improved gesture recognition accuracy from 79% to 91%.</p>
+            <div><span class="tools-tag">scikit-learn</span><span class="tools-tag">Python</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EDUCATION & CREDENTIALS -->
+      <section class="journey-section" id="education">
+        <div class="section-title"><i class="fas fa-university"></i> education &amp; credentials</div>
+        <div style="display:flex; flex-direction:column; gap:1.4rem; font-size:1.05rem;">
+          <div><strong>MSc Systems, Control and Mechatronics (Autonomous Systems track)</strong> — Chalmers University of Technology (2024–2026)</div>
+          <div><strong>B.Tech Electronics and Communication Engineering</strong> — Amrita School of Engineering (2020–2024)</div>
+          <hr style="border-color:#2dd4bf30;">
+          <div><i class="fas fa-certificate" style="color:#2dd4bf;"></i> Udacity Self-Driving Car Engineer Nanodegree — object detection, sensor fusion, tracking, control (Python/C++)</div>
+        </div>
+      </section>
+
+      <!-- CONNECT -->
+      <section class="journey-section" id="connect">
+        <div class="section-title"><i class="fas fa-paper-plane"></i> let's connect</div>
+        <div style="display:flex; flex-wrap:wrap; gap:2rem; justify-content:center; font-size:1.1rem;">
+          <a href="https://github.com/Dharun235" style="color:#9fc5ff; text-decoration:none;"><i class="fab fa-github"></i> github.com/Dharun235</a>
+          <a href="https://www.linkedin.com/in/dharun-kumar20/" style="color:#9fc5ff; text-decoration:none;"><i class="fab fa-linkedin"></i> linkedin.com/in/dharun-kumar20</a>
+          <a href="mailto:dharunkumar.senthilkumar9@gmail.com" style="color:#9fc5ff; text-decoration:none;"><i class="fas fa-envelope"></i> dharunkumar.senthilkumar9@gmail.com</a>
+        </div>
+        <p style="text-align:center; margin-top:2rem; color:#6b9faa;">
+          Based in Gothenburg, Sweden · Open to Industrial PhD and R&D roles in embedded ML, perception and robotics
         </p>
-      </div>
+      </section>
     </div>
-  </section>
+  </div>
 
-  <!-- SKILLS -->
-  <section class="journey-section">
-    <div class="section-title"><i class="fas fa-code"></i> skills &amp; toolchain</div>
-    <div style="display:flex; flex-wrap:wrap; gap:2rem; justify-content:space-between;">
-      <div>
-        <h3><i class="fas fa-terminal"></i> languages</h3>
-        <p>Python · C/C++ · Embedded C · MATLAB/Simulink</p>
-      </div>
-      <div>
-        <h3><i class="fas fa-tools"></i> tools &amp; frameworks</h3>
-        <p>Git · Docker · ROS2 · FreeRTOS · GitHub Actions · Linux · CAN</p>
-      </div>
-      <div>
-        <h3><i class="fas fa-brain"></i> machine learning &amp; vision</h3>
-        <p>PyTorch · TensorFlow · OpenCV · scikit-learn · LSTM · Transformer · FiftyOne</p>
-      </div>
-    </div>
-  </section>
+  <script>
+    // Sidebar Navigation
+    const navItems = document.querySelectorAll('.nav-item');
+    const sections = document.querySelectorAll('.journey-section');
+    
+    navItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = item.getAttribute('href').substring(1);
+        const targetSection = document.getElementById(targetId);
+        if (targetSection) {
+          targetSection.scrollIntoView({ behavior: 'smooth' });
+          // Update active state
+          navItems.forEach(i => i.classList.remove('active'));
+          item.classList.add('active');
+        }
+      });
+    });
 
-  <!-- WORK EXPERIENCE -->
-  <section class="journey-section">
-    <div class="section-title"><i class="fas fa-briefcase"></i> work &amp; research</div>
-    <div class="grid-2col">
+    // Active nav on scroll
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100;
+        if (scrollY >= sectionTop) {
+          current = section.getAttribute('id');
+        }
+      });
+      navItems.forEach(item => {
+        item.classList.remove('active');
+        if (item.getAttribute('href') === `#${current}`) {
+          item.classList.add('active');
+        }
+      });
+    });
 
-      <div class="resume-card">
-        <h3><i class="fas fa-graduation-cap"></i> Master Thesis Student – ESAB <span style="color:#8dd0ff;">(Jan 2026 – present)</span></h3>
-        <p>Developing classical computer vision pipelines (OpenCV) on high-speed welding images and deep learning time-series models to predict arc characteristics from sensor data (camera-free real-time control).</p>
-        <div><span class="tools-tag">Python</span><span class="tools-tag">OpenCV</span><span class="tools-tag">PyTorch</span><span class="tools-tag">NumPy</span><span class="tools-tag">Pandas</span><span class="tools-tag">Linux</span></div>
-      </div>
+    // Whack-a-Mole Game
+    const gameBoard = document.getElementById('gameBoard');
+    const startBtn = document.getElementById('startBtn');
+    const scoreEl = document.getElementById('score');
+    let score = 0;
+    let gameActive = false;
+    let gameTimer;
+    let moleTimer;
 
-      <div class="resume-card">
-        <h3><i class="fas fa-rocket"></i> Software Engineer – EUROC 2026 (Team CAESAR) <span style="color:#8dd0ff;">(Sept 2025 – present)</span></h3>
-        <p>Real-time flight computer software: state machines, FreeRTOS scheduling, sensor integration, CI/CD pipelines and system testing.</p>
-        <div><span class="tools-tag">C/C++</span><span class="tools-tag">FreeRTOS</span><span class="tools-tag">GitHub Actions</span><span class="tools-tag">ROS2</span></div>
-      </div>
+    const holes = document.querySelectorAll('.mole-hole');
+    holes.forEach(hole => {
+      hole.addEventListener('click', () => {
+        if (!gameActive || !hole.classList.contains('active')) return;
+        const mole = hole.querySelector('.mole');
+        if (mole) {
+          mole.classList.add('popped');
+          score += 10;
+          scoreEl.textContent = `Score: ${score}`;
+          // Simple sound effect (beep via Web Audio API)
+          const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          const oscillator = audioCtx.createOscillator();
+          const gainNode = audioCtx.createGain();
+          oscillator.connect(gainNode);
+          gainNode.connect(audioCtx.destination);
+          oscillator.frequency.value = 800;
+          gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+          oscillator.start(audioCtx.currentTime);
+          oscillator.stop(audioCtx.currentTime + 0.1);
+          setTimeout(() => mole.remove(), 100);
+        }
+      });
+    });
 
-      <div class="resume-card">
-        <h3><i class="fas fa-robot"></i> Research Assistant – Chalmers University <span style="color:#8dd0ff;">(Dec 2024 – Sept 2025)</span></h3>
-        <p>LLM integration with social robots (Misty & Pepper) and OpenCV-based perception for human-robot interaction studies.</p>
-        <div><span class="tools-tag">Python</span><span class="tools-tag">OpenCV</span><span class="tools-tag">Flask</span></div>
-      </div>
+    function popMole() {
+      const activeHoles = document.querySelectorAll('.mole-hole.active');
+      activeHoles.forEach(hole => hole.classList.remove('active'));
+      if (!gameActive) return;
+      const randomHole = holes[Math.floor(Math.random() * holes.length)];
+      randomHole.classList.add('active');
+      const mole = document.createElement('div');
+      mole.classList.add('mole');
+      randomHole.appendChild(mole);
+      setTimeout(() => {
+        if (randomHole.querySelector('.mole')) {
+          randomHole.classList.remove('active');
+          randomHole.querySelector('.mole').remove();
+          score -= 5; // Penalty for missing
+          scoreEl.textContent = `Score: ${score}`;
+        }
+      }, 1200);
+    }
 
-    </div>
-  </section>
-
-  <!-- PROJECTS (now in same format as Work Experience) -->
-  <section class="journey-section">
-    <div class="section-title"><i class="fas fa-code-branch"></i> selected projects</div>
-    <div class="grid-2col">
-
-      <div class="resume-card">
-        <h3><i class="fas fa-satellite"></i> Sensor Fusion and Tracking</h3>
-        <p>Fused LiDAR + camera data from Waymo Open Dataset; implemented Extended Kalman Filter for 3D vehicle tracking in CARLA simulator.</p>
-        <div><span class="tools-tag">TensorFlow</span><span class="tools-tag">Python</span><span class="tools-tag">ROS2</span><span class="tools-tag">C++</span><span class="tools-tag">OpenCV</span></div>
-        <div style="margin-top:0.8rem;"><a href="https://github.com/Dharun235/sensor-fusion-and-non-linear-filtering-project" style="color:#9fc5ff; text-decoration:underline;">GitHub →</a></div>
-      </div>
-
-      <div class="resume-card">
-        <h3><i class="fas fa-battery-three-quarters"></i> Battery Health Prediction</h3>
-        <p>Deep learning models (LSTM, GRU, CNN-LSTM, Transformer) in PyTorch for Li-ion capacity degradation and RUL from time-series data. Transformer with weighted pooling performed best.</p>
-        <div><span class="tools-tag">PyTorch</span><span class="tools-tag">NumPy</span><span class="tools-tag">Pandas</span></div>
-        <div style="margin-top:0.8rem;"><a href="https://github.com/Dharun235/Battery-health-prediction" style="color:#9fc5ff; text-decoration:underline;">GitHub →</a></div>
-      </div>
-
-      <div class="resume-card">
-        <h3><i class="fas fa-shield-alt"></i> Robust Mobile Robot Control through Adversarial Training</h3>
-        <p>Extended RL navigation framework with adversarial agent using pure pursuit and nonlinear MPC; improved success rate from 34% to 56% (74% with pure pursuit).</p>
-        <div><span class="tools-tag">PyTorch</span><span class="tools-tag">Python</span></div>
-        <div style="margin-top:0.8rem;"><a href="https://github.com/KilianFt/ROAM/tree/dharun_mpc" style="color:#9fc5ff; text-decoration:underline;">GitHub →</a></div>
-      </div>
-
-      <div class="resume-card">
-        <h3><i class="fas fa-hand-paper"></i> Machine Learning Enhanced Smart Hand-Wearable</h3>
-        <p>Collected 160k flex-sensor datapoints from 100 subjects; trained ensemble classifiers and improved gesture recognition accuracy from 79% to 91%.</p>
-        <div><span class="tools-tag">scikit-learn</span><span class="tools-tag">Python</span></div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- EDUCATION & CREDENTIALS -->
-  <section class="journey-section">
-    <div class="section-title"><i class="fas fa-university"></i> education &amp; credentials</div>
-    <div style="display:flex; flex-direction:column; gap:1.4rem; font-size:1.05rem;">
-      <div><strong>MSc Systems, Control and Mechatronics (Autonomous Systems track)</strong> — Chalmers University of Technology (2024–2026)</div>
-      <div><strong>B.Tech Electronics and Communication Engineering</strong> — Amrita School of Engineering (2020–2024)</div>
-      <hr style="border-color:#2dd4bf30;">
-      <div><i class="fas fa-certificate" style="color:#2dd4bf;"></i> Udacity Self-Driving Car Engineer Nanodegree — object detection, sensor fusion, tracking, control (Python/C++)</div>
-    </div>
-  </section>
-
-  <!-- CONNECT -->
-  <section class="journey-section">
-    <div class="section-title"><i class="fas fa-paper-plane"></i> let's connect</div>
-    <div style="display:flex; flex-wrap:wrap; gap:2rem; justify-content:center; font-size:1.1rem;">
-      <a href="https://github.com/Dharun235" style="color:#9fc5ff; text-decoration:none;"><i class="fab fa-github"></i> github.com/Dharun235</a>
-      <a href="https://www.linkedin.com/in/dharun-kumar20/" style="color:#9fc5ff; text-decoration:none;"><i class="fab fa-linkedin"></i> linkedin.com/in/dharun-kumar20</a>
-      <a href="mailto:dharunkumar.senthilkumar9@gmail.com" style="color:#9fc5ff; text-decoration:none;"><i class="fas fa-envelope"></i> dharunkumar.senthilkumar9@gmail.com</a>
-    </div>
-    <p style="text-align:center; margin-top:2rem; color:#6b9faa;">
-      Based in Gothenburg, Sweden · Open to Industrial PhD and R&D roles in embedded ML, perception and robotics
-    </p>
-  </section>
-
-</div>
+    startBtn.addEventListener('click', () => {
+      if (gameActive) {
+        clearInterval(moleTimer);
+        gameActive = false;
+        startBtn.textContent = 'Start Game!';
+        holes.forEach(hole => {
+          hole.classList.remove('active');
+          const mole = hole.querySelector('.mole');
+          if (mole) mole.remove();
+        });
+        return;
+      }
+      gameActive = true;
+      score = 0;
+      scoreEl.textContent = `Score: ${score}`;
+      startBtn.textContent = 'Stop Game';
+      popMole();
+      moleTimer = setInterval(popMole, 1500);
+      gameTimer = setTimeout(() => {
+        clearInterval(moleTimer);
+        gameActive = false;
+        startBtn.textContent = 'Game Over! Play Again';
+        alert(`Game Over! Final Score: ${score}`); // Fun popup
+      }, 30000); // 30 seconds game
+    });
+  </script>
 </body>
 </html>
