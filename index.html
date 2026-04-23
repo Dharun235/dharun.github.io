@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Dharunkumar Senthilkumar · Embedded ML · Perception · Portfolio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,13 +34,25 @@
             --text-primary: #f1f5f9;
             --text-secondary: #cbd5e1;
             --text-muted: #94a3b8;
-            --radius-lg: 18px;
-            --radius-md: 10px;
+            --radius-lg: clamp(12px, 2vw, 18px);
+            --radius-md: clamp(8px, 1.5vw, 10px);
+            --overlay-padding: clamp(0.9rem, 2.5vw, 2.2rem);
+            --label-font: clamp(0.42rem, 0.9vw, 0.68rem);
+            --sub-label-font: clamp(0.36rem, 0.7vw, 0.58rem);
+            --body-font: clamp(0.68rem, 1.1vw, 0.88rem);
+            --title-font: clamp(0.82rem, 1.4vw, 1.25rem);
+            --subnav-font: clamp(0.58rem, 0.85vw, 0.7rem);
         }
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+        html {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            -webkit-overflow-scrolling: touch;
         }
         body {
             font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
@@ -46,11 +60,16 @@
             color: var(--text-primary);
             overflow: hidden;
             height: 100vh;
+            height: 100dvh;
             width: 100vw;
+            width: 100dvw;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
             -webkit-user-select: none;
             cursor: default;
+            position: fixed;
+            inset: 0;
+            touch-action: manipulation;
         }
         h1,
         h2,
@@ -64,6 +83,7 @@
             inset: 0;
             z-index: 1;
             pointer-events: auto;
+            display: block;
         }
         #labels-container {
             position: fixed;
@@ -80,23 +100,23 @@
             transition: opacity 0.4s ease;
         }
         .blob-label .label-dot {
-            width: 7px;
-            height: 7px;
+            width: clamp(4px, 0.8vw, 7px);
+            height: clamp(4px, 0.8vw, 7px);
             border-radius: 50%;
-            margin: 0 auto 5px;
+            margin: 0 auto clamp(3px, 0.5vw, 5px);
             box-shadow: 0 0 16px currentColor, 0 0 32px currentColor;
             background: currentColor;
         }
         .blob-label .label-text {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.68rem;
+            font-size: var(--label-font);
             font-weight: 700;
             letter-spacing: 0.07em;
             text-shadow: 0 0 14px rgba(0, 0, 0, 0.9), 0 0 4px currentColor;
             white-space: nowrap;
             color: #f8fafc;
             background: rgba(0, 0, 0, 0.55);
-            padding: 3px 10px;
+            padding: clamp(1px, 0.3vw, 3px) clamp(5px, 1.2vw, 10px);
             border-radius: 16px;
             display: inline-block;
             backdrop-filter: blur(5px);
@@ -104,15 +124,15 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         .blob-label.sub-label .label-text {
-            font-size: 0.58rem;
+            font-size: var(--sub-label-font);
             font-weight: 600;
-            padding: 2px 8px;
+            padding: clamp(1px, 0.25vw, 2px) clamp(4px, 0.9vw, 8px);
             border-radius: 12px;
             background: rgba(0, 0, 0, 0.6);
         }
         .blob-label.sub-label .label-dot {
-            width: 5px;
-            height: 5px;
+            width: clamp(3px, 0.55vw, 5px);
+            height: clamp(3px, 0.55vw, 5px);
             box-shadow: 0 0 8px currentColor, 0 0 18px currentColor;
         }
         #overlay {
@@ -125,6 +145,7 @@
             justify-content: center;
             opacity: 0;
             transition: opacity 0.4s ease;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
         #overlay.active {
             opacity: 1;
@@ -144,15 +165,20 @@
             background: var(--bg-card);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: var(--radius-lg);
-            padding: 2rem 2.2rem;
-            max-width: 700px;
+            padding: var(--overlay-padding);
+            max-width: clamp(320px, 90vw, 700px);
             width: 92%;
             max-height: 82vh;
+            max-height: 82dvh;
             overflow-y: auto;
+            overflow-x: hidden;
             box-shadow: 0 30px 70px rgba(0, 0, 0, 0.7), 0 0 120px rgba(34, 211, 187, 0.05);
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
             animation: cardIn 0.4s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
         }
         @keyframes cardIn {
             from {
@@ -168,30 +194,39 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 1rem;
+            margin-bottom: clamp(0.5rem, 1.2vw, 1rem);
             border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-            padding-bottom: 0.8rem;
+            padding-bottom: clamp(0.5rem, 1vw, 0.8rem);
             flex-wrap: wrap;
             gap: 0.7rem;
+            position: sticky;
+            top: 0;
+            background: var(--bg-card);
+            z-index: 3;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
         }
         #overlay .overlay-title {
-            font-size: 1.25rem;
+            font-size: var(--title-font);
             font-weight: 700;
             letter-spacing: 0.04em;
             display: flex;
             align-items: center;
-            gap: 7px;
+            gap: clamp(4px, 0.8vw, 7px);
             color: #fff;
+            flex: 1 1 auto;
+            min-width: 0;
+            word-break: break-word;
         }
         #overlay .overlay-close {
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.16);
             color: #e2e8f0;
-            padding: 0.45rem 1rem;
+            padding: clamp(0.35rem, 0.7vw, 0.45rem) clamp(0.7rem, 1.3vw, 1rem);
             border-radius: 22px;
             cursor: pointer;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 0.8rem;
+            font-size: clamp(0.65rem, 0.9vw, 0.8rem);
             font-weight: 600;
             letter-spacing: 0.03em;
             transition: all 0.25s ease;
@@ -199,8 +234,14 @@
             align-items: center;
             gap: 5px;
             white-space: nowrap;
+            flex-shrink: 0;
+            min-height: 40px;
+            min-width: 40px;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
         }
-        #overlay .overlay-close:hover {
+        #overlay .overlay-close:hover,
+        #overlay .overlay-close:active {
             background: rgba(34, 211, 187, 0.14);
             border-color: var(--teal);
             color: var(--teal-bright);
@@ -209,19 +250,21 @@
         #overlay .overlay-body {
             color: var(--text-secondary);
             line-height: 1.7;
-            font-size: 0.88rem;
+            font-size: var(--body-font);
         }
         #overlay .overlay-body h3 {
-            font-size: 0.95rem;
-            margin: 1rem 0 0.45rem;
+            font-size: clamp(0.78rem, 1.1vw, 0.95rem);
+            margin: clamp(0.6rem, 1.2vw, 1rem) 0 clamp(0.3rem, 0.6vw, 0.45rem);
             color: #f8fafc;
             letter-spacing: 0.03em;
             display: flex;
             align-items: center;
             gap: 6px;
+            flex-wrap: wrap;
         }
         #overlay .overlay-body p {
             margin-bottom: 0.55rem;
+            word-break: break-word;
         }
         #overlay .overlay-body a {
             color: var(--teal-bright);
@@ -230,8 +273,13 @@
             transition: color 0.2s;
             display: inline-block;
             margin: 2px 0;
+            word-break: break-all;
+            min-height: 36px;
+            line-height: 36px;
+            padding: 0 4px;
         }
-        #overlay .overlay-body a:hover {
+        #overlay .overlay-body a:hover,
+        #overlay .overlay-body a:active {
             color: #fff;
             text-decoration: underline;
         }
@@ -241,7 +289,7 @@
             border: 1px solid rgba(34, 211, 187, 0.28);
             border-radius: 9px;
             padding: 0.16rem 0.6rem;
-            font-size: 0.68rem;
+            font-size: clamp(0.58rem, 0.75vw, 0.68rem);
             margin: 0.12rem 0.18rem 0.12rem 0;
             color: #99f6e4;
             letter-spacing: 0.03em;
@@ -251,23 +299,31 @@
             display: flex;
             flex-wrap: wrap;
             gap: 0.35rem;
-            margin-bottom: 1rem;
+            margin-bottom: clamp(0.5rem, 1vw, 1rem);
+            position: sticky;
+            top: 50px;
+            background: var(--bg-card);
+            z-index: 2;
+            padding: 0.3rem 0;
         }
         #overlay .sub-nav-btn {
             background: rgba(255, 255, 255, 0.025);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: var(--text-muted);
-            padding: 0.34rem 0.8rem;
+            padding: clamp(0.28rem, 0.5vw, 0.34rem) clamp(0.55rem, 0.9vw, 0.8rem);
             border-radius: 18px;
             cursor: pointer;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 0.7rem;
+            font-size: var(--subnav-font);
             font-weight: 500;
             letter-spacing: 0.03em;
             transition: all 0.25s ease;
             white-space: nowrap;
+            min-height: 36px;
+            -webkit-tap-highlight-color: transparent;
         }
-        #overlay .sub-nav-btn:hover {
+        #overlay .sub-nav-btn:hover,
+        #overlay .sub-nav-btn:active {
             background: rgba(34, 211, 187, 0.07);
             border-color: rgba(34, 211, 187, 0.35);
             color: var(--teal-bright);
@@ -283,8 +339,8 @@
             position: fixed;
             pointer-events: none;
             z-index: 30;
-            width: 18px;
-            height: 18px;
+            width: clamp(14px, 2vw, 18px);
+            height: clamp(14px, 2vw, 18px);
             border-radius: 50%;
             border: 1.5px solid rgba(34, 211, 187, 0.55);
             transform: translate(-50%, -50%);
@@ -296,23 +352,24 @@
             opacity: 1;
         }
         #cursor-hint.hovering {
-            width: 32px;
-            height: 32px;
+            width: clamp(24px, 3.5vw, 32px);
+            height: clamp(24px, 3.5vw, 32px);
             border-color: var(--teal-bright);
             box-shadow: 0 0 24px var(--teal-glow);
         }
         #page-footer {
             position: fixed;
-            bottom: 10px;
+            bottom: clamp(6px, 1.2vh, 10px);
             left: 50%;
             transform: translateX(-50%);
             z-index: 20;
             color: #5a7a6a;
-            font-size: 0.6rem;
+            font-size: clamp(0.45rem, 0.7vw, 0.6rem);
             letter-spacing: 0.04em;
             font-family: 'Space Grotesk', sans-serif;
             pointer-events: none;
             text-shadow: 0 0 6px rgba(0, 0, 0, 0.7);
+            white-space: nowrap;
         }
         #overlay .overlay-card::-webkit-scrollbar {
             width: 3px;
@@ -326,49 +383,207 @@
         }
         @media (max-width: 768px) {
             #overlay .overlay-card {
-                padding: 1.2rem 1rem;
+                padding: 1rem 0.85rem;
                 max-height: 85vh;
+                max-height: 85dvh;
                 border-radius: 14px;
-                width: 94%;
+                width: 95%;
+                max-width: 95vw;
             }
-            #overlay .overlay-title {
-                font-size: 1rem;
+            #overlay .overlay-header {
+                gap: 0.5rem;
+                padding-bottom: 0.6rem;
+                margin-bottom: 0.6rem;
             }
             #overlay .overlay-close {
                 padding: 0.35rem 0.7rem;
                 font-size: 0.7rem;
+                min-height: 36px;
             }
             #overlay .overlay-body {
-                font-size: 0.78rem;
+                font-size: 0.75rem;
             }
-            .blob-label .label-text {
-                font-size: 0.55rem;
-                padding: 2px 7px;
+            #overlay .sub-nav {
+                gap: 0.25rem;
+                top: 44px;
+                padding: 0.2rem 0;
             }
             #overlay .sub-nav-btn {
-                font-size: 0.62rem;
-                padding: 0.28rem 0.6rem;
+                font-size: 0.6rem;
+                padding: 0.26rem 0.55rem;
+                min-height: 32px;
+                border-radius: 14px;
+            }
+            #cursor-hint {
+                display: none;
+            }
+            #page-footer {
+                font-size: 0.48rem;
+                bottom: 8px;
+            }
+            .blob-label .label-text {
+                font-size: 0.5rem;
+                padding: 1px 6px;
+                border-radius: 10px;
+            }
+            .blob-label.sub-label .label-text {
+                font-size: 0.4rem;
+                padding: 1px 5px;
+            }
+            .blob-label .label-dot {
+                width: 5px;
+                height: 5px;
+                margin-bottom: 3px;
+                box-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+            }
+            .blob-label.sub-label .label-dot {
+                width: 3px;
+                height: 3px;
             }
         }
         @media (max-width: 480px) {
             #overlay .overlay-card {
-                padding: 0.9rem 0.75rem;
+                padding: 0.75rem 0.6rem;
                 max-height: 88vh;
+                max-height: 88dvh;
                 border-radius: 10px;
-                width: 96%;
+                width: 97%;
+                max-width: 97vw;
+            }
+            #overlay .overlay-header {
+                gap: 0.35rem;
+                padding-bottom: 0.4rem;
+                margin-bottom: 0.4rem;
             }
             #overlay .overlay-title {
-                font-size: 0.85rem;
+                font-size: 0.78rem;
+                gap: 4px;
+            }
+            #overlay .overlay-close {
+                padding: 0.3rem 0.55rem;
+                font-size: 0.62rem;
+                min-height: 32px;
+                min-width: 32px;
+                border-radius: 16px;
             }
             #overlay .overlay-body {
                 font-size: 0.7rem;
+                line-height: 1.55;
+            }
+            #overlay .overlay-body h3 {
+                font-size: 0.72rem;
+                margin: 0.5rem 0 0.25rem;
+            }
+            #overlay .overlay-body a {
+                min-height: 32px;
+                line-height: 32px;
+                font-size: 0.68rem;
+            }
+            #overlay .sub-nav {
+                gap: 0.2rem;
+                top: 38px;
+                padding: 0.15rem 0;
+            }
+            #overlay .sub-nav-btn {
+                font-size: 0.55rem;
+                padding: 0.22rem 0.45rem;
+                min-height: 28px;
+                border-radius: 12px;
+            }
+            #overlay .overlay-body .tools-tag {
+                font-size: 0.55rem;
+                padding: 0.1rem 0.4rem;
             }
             .blob-label .label-text {
-                font-size: 0.45rem;
-                padding: 1px 5px;
+                font-size: 0.42rem;
+                padding: 1px 4px;
+                letter-spacing: 0.04em;
+                border-radius: 8px;
             }
-            #cursor-hint {
-                display: none;
+            .blob-label.sub-label .label-text {
+                font-size: 0.35rem;
+                padding: 1px 3px;
+            }
+            .blob-label .label-dot {
+                width: 3px;
+                height: 3px;
+                margin-bottom: 2px;
+            }
+            .blob-label.sub-label .label-dot {
+                width: 2px;
+                height: 2px;
+            }
+            #page-footer {
+                font-size: 0.4rem;
+                bottom: 5px;
+            }
+        }
+        @media (min-width: 769px) and (max-width: 1024px) {
+            #overlay .overlay-card {
+                max-width: 85vw;
+                padding: 1.4rem 1.5rem;
+            }
+            #overlay .overlay-title {
+                font-size: 1.05rem;
+            }
+            #overlay .overlay-body {
+                font-size: 0.8rem;
+            }
+            .blob-label .label-text {
+                font-size: 0.58rem;
+            }
+            #overlay .sub-nav-btn {
+                font-size: 0.64rem;
+                min-height: 38px;
+            }
+        }
+        @media (min-width: 1025px) and (max-width: 1440px) {
+            #overlay .overlay-card {
+                max-width: 650px;
+            }
+        }
+        @media (min-width: 2000px) {
+            #overlay .overlay-card {
+                max-width: 800px;
+            }
+            .blob-label .label-text {
+                font-size: 0.8rem;
+            }
+            #overlay .overlay-body {
+                font-size: 0.95rem;
+            }
+            #overlay .overlay-title {
+                font-size: 1.4rem;
+            }
+        }
+        @media (orientation: landscape) and (max-height: 500px) {
+            #overlay .overlay-card {
+                max-height: 90vh;
+                max-height: 90dvh;
+                padding: 0.7rem 0.9rem;
+                border-radius: 10px;
+            }
+            #overlay .overlay-header {
+                padding-bottom: 0.3rem;
+                margin-bottom: 0.3rem;
+            }
+            #overlay .overlay-body {
+                font-size: 0.65rem;
+                line-height: 1.4;
+            }
+            #overlay .sub-nav {
+                top: 35px;
+                padding: 0.1rem 0;
+                gap: 0.2rem;
+            }
+            #overlay .sub-nav-btn {
+                font-size: 0.5rem;
+                padding: 0.18rem 0.4rem;
+                min-height: 26px;
+            }
+            .blob-label .label-text {
+                font-size: 0.4rem;
+                padding: 1px 4px;
             }
         }
     </style>
@@ -423,12 +638,12 @@
                     <p><strong>Swedish</strong> — Beginner</p>`,
                     'profile-contact': `<h3><i class="fas fa-envelope" style="color:#22d3bb;"></i> Contact</h3>
                     <p><i class="fas fa-envelope"></i> <a href="mailto:dharunkumar.senthilkumar9@gmail.com">dharunkumar.senthilkumar9@gmail.com</a></p>
-                    <p><i class="fab fa-linkedin"></i> <a href="https://www.linkedin.com/in/dharun-kumar20/" target="_blank">linkedin.com/in/dharun-kumar20</a></p>
-                    <p><i class="fab fa-github"></i> <a href="https://github.com/Dharun235" target="_blank">github.com/Dharun235</a></p>
-                    <p><i class="fas fa-robot"></i> <a href="https://huggingface.co/Dharunkumar9" target="_blank">Hugging Face: Dharunkumar9</a></p>
-                    <p><i class="fas fa-graduation-cap"></i> <a href="https://scholar.google.com/citations?user=6-rGO6EAAAAJ&hl=en" target="_blank">Google Scholar</a></p>
-                    <p><i class="fas fa-book-open"></i> <a href="https://www.coursera.org/user/7bda036d88dcd05d18963ee9a333096f" target="_blank">Coursera Profile</a></p>
-                    <p><i class="fas fa-chart-line"></i> <a href="https://www.kaggle.com/dharun235" target="_blank">Kaggle: dharun235</a></p>`,
+                    <p><i class="fab fa-linkedin"></i> <a href="https://www.linkedin.com/in/dharun-kumar20/" target="_blank" rel="noopener">linkedin.com/in/dharun-kumar20</a></p>
+                    <p><i class="fab fa-github"></i> <a href="https://github.com/Dharun235" target="_blank" rel="noopener">github.com/Dharun235</a></p>
+                    <p><i class="fas fa-robot"></i> <a href="https://huggingface.co/Dharunkumar9" target="_blank" rel="noopener">Hugging Face: Dharunkumar9</a></p>
+                    <p><i class="fas fa-graduation-cap"></i> <a href="https://scholar.google.com/citations?user=6-rGO6EAAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a></p>
+                    <p><i class="fas fa-book-open"></i> <a href="https://www.coursera.org/user/7bda036d88dcd05d18963ee9a333096f" target="_blank" rel="noopener">Coursera Profile</a></p>
+                    <p><i class="fas fa-chart-line"></i> <a href="https://www.kaggle.com/dharun235" target="_blank" rel="noopener">Kaggle: dharun235</a></p>`,
                 }
             }, {
                 id: 'skills',
@@ -445,7 +660,7 @@
                     { id: 'skills-web', label: 'Web', icon: 'fa-globe' }
                 ],
                 content: {
-                    'skills-prog': `<h3><i class="fas fa-code"></i> Programming Languages</h3><p style="color:#94a3b8;">Python · C · C++ · MATLAB · JavaScript · RUST </p>`,
+                    'skills-prog': `<h3><i class="fas fa-code"></i> Programming Languages</h3><p style="color:#94a3b8;">Python · C · C++ · MATLAB · JavaScript · RUST</p>`,
                     'skills-embedded': `<h3><i class="fas fa-microchip"></i> Embedded & Robotics</h3><p style="color:#94a3b8;">FreeRTOS · ROS2 · CAN · Google Test</p><h3><i class="fas fa-sliders-h"></i> Control & Simulation</h3><p style="color:#94a3b8;">MATLAB · Simulink · Simscape</p>`,
                     'skills-ml': `<h3><i class="fas fa-brain"></i> ML & Computer Vision</h3><p style="color:#94a3b8;">TensorFlow · PyTorch · Gym · OpenCV · CUDA · NumPy · Pandas</p>`,
                     'skills-devops': `<h3><i class="fas fa-server"></i> Backend & Data</h3><p style="color:#94a3b8;">Node.js · Flask · SQLite · Elasticsearch · MongoDB · Google Cloud</p><h3><i class="fas fa-tools"></i> DevOps & Tools</h3><p style="color:#94a3b8;">Git · GitLab · Docker · Linux · GitHub Actions</p>`,
@@ -497,7 +712,7 @@
                     <p><strong>🧠 Research Assistant – Chalmers (Dec 2024 – Sep 2025)</strong><br>LLM integration with social robots (Misty & Pepper) and OpenCV-based perception.<br><span class="tools-tag">Python</span><span class="tools-tag">OpenCV</span><span class="tools-tag">Flask</span></p>`,
                     'exp-thesis': `<h3><i class="fas fa-book"></i> Theses</h3>
                     <p><strong>🔬 Master Thesis Student – ESAB (Jan 2026 – Present)</strong><br>Developing computer vision and machine learning methods for soft sensing of welding parameters using current and voltage signals.<br><span class="tools-tag">Python</span><span class="tools-tag">OpenCV</span><span class="tools-tag">PyTorch</span><span class="tools-tag">Time-Series ML</span></p>
-                    <p><strong>🖐️ B.Tech Dissertation – ML-Based Smart Glove for Gesture Communication</strong><br>Associated with Amrita Vishwa Vidyapeetham. Built a wearable glove with flex sensors to capture hand gestures and translate them into speech via an Android app. Trained ML models on data from 100 participants and reached about 91% accuracy with an Extra Trees classifier.<br><span class="tools-tag">TinyML</span><span class="tools-tag">Bluetooth</span><span class="tools-tag">Extra Trees</span><span class="tools-tag">Android</span><br><a href="https://ieeexplore.ieee.org/document/10958541" target="_blank">📄 IEEE Paper →</a> <a href="https://github.com/Dharun235/dharun.github.io/blob/main/Final%20Report%20-%20B.Tech%20dissertation%20work.pdf" target="_blank">📄 Final Report →</a></p>`,
+                    <p><strong>🖐️ B.Tech Dissertation – ML-Based Smart Glove for Gesture Communication</strong><br>Associated with Amrita Vishwa Vidyapeetham. Built a wearable glove with flex sensors to capture hand gestures and translate them into speech via an Android app. Trained ML models on data from 100 participants and reached about 91% accuracy with an Extra Trees classifier.<br><span class="tools-tag">TinyML</span><span class="tools-tag">Bluetooth</span><span class="tools-tag">Extra Trees</span><span class="tools-tag">Android</span><br><a href="https://ieeexplore.ieee.org/document/10958541" target="_blank" rel="noopener">📄 IEEE Paper →</a> <a href="https://github.com/Dharun235/dharun.github.io/blob/main/Final%20Report%20-%20B.Tech%20dissertation%20work.pdf" target="_blank" rel="noopener">📄 Final Report →</a></p>`,
                     'exp-teaching': `<h3><i class="fas fa-chalkboard-teacher"></i> Teaching</h3><p><strong>Teaching Assistant – Chalmers (Sep – Nov 2025)</strong><br>Teaching assistant in Discrete Mathematics course.</p>`,
                     'exp-intern': `<h3><i class="fas fa-building"></i> Internships</h3>
                     <p><strong>Summer Intern – Resolve-EV (Jul – Aug 2025)</strong><br>Programmed STM32-based quick-charging module using CAN bus.<br><span class="tools-tag">STM32</span><span class="tools-tag">CAN</span></p>`,
@@ -523,14 +738,14 @@
                     { id: 'proj-snail3d', label: '3D Snail Scan', icon: 'fa-dna' }
                 ],
                 content: {
-                    'proj-vikram': `<h3><i class="fas fa-user-astronaut"></i> Vikram</h3><p>A modular AI assistant project focused on practical workflows, clean architecture, and iterative experimentation for real-world automation and productivity tasks.</p><div><span class="tools-tag">Python</span><span class="tools-tag">Automation</span><span class="tools-tag">AI Assistant</span></div><a href="https://github.com/Dharun235/vikram" style="color:#2dd4bf; text-decoration:underline;">Repo →</a>`,
-                    'proj-agri': `<h3><i class="fas fa-comments"></i> Agri LLM Chat Web App</h3><p>Built a Dockerized web app for agricultural doubt-solving chat with a custom fine-tuned LLM.</p><div><span class="tools-tag">RAG</span><span class="tools-tag">VLM</span><span class="tools-tag">Hugging Face</span></div><a href="https://huggingface.co/datasets/Dharunkumar9/agri-vision-ft-dataset">Vision FT Dataset →</a><br><a href="https://huggingface.co/datasets/Dharunkumar9/agri-rag-corpus">RAG Corpus →</a><br><a href="https://huggingface.co/Dharunkumar9/SmolVLM-256M-Instruct-Agri">Model →</a><br><a href="https://github.com/Dharun235/-Offline-Plant-Health-Advisor-for-New-Age-Urban-Farmers">Repo →</a>`,
-                    'proj-battery': `<h3><i class="fas fa-battery-full"></i> Battery Capacity Prediction using Transformers</h3><p>Developed deep learning models based on Transformer architectures to predict Li-ion battery capacity degradation and estimate remaining useful life using time-series charge-discharge data.</p><div><span class="tools-tag">Transformers</span><span class="tools-tag">Time-Series</span><span class="tools-tag">PyTorch</span></div><a href="https://huggingface.co/Dharunkumar9/battery-capacity-predictor">Model →</a><br><a href="https://github.com/Dharun235/Battery-health-prediction">Repo →</a>`,
-                    'proj-fusion': `<h3><i class="fas fa-car-side"></i> LiDAR-Camera Sensor Fusion for Vehicle Tracking</h3><p>Built a sensor fusion pipeline with the Waymo Open Dataset to detect and track vehicles using LiDAR and camera data. Implemented BEV-based 3D LiDAR detection and Extended Kalman Filter multi-object tracking with data association and track management.</p><div><span class="tools-tag">Sensor Fusion</span><span class="tools-tag">EKF</span><span class="tools-tag">Waymo Open Dataset</span><span class="tools-tag">3D Detection</span></div><a href="https://github.com/Dharun235/sensor-fusion-and-non-linear-filtering-project">Repo →</a>`,
-                    'proj-quad': `<h3><i class="fas fa-helicopter"></i> Quadrotor Dynamics and LQR Flight Control</h3><p>Associated with Chalmers University of Technology. Developed a 6-DOF quadrotor dynamic model in MATLAB/Simulink and Simscape, implemented IMU sensor fusion with a complementary filter, and designed an LQR controller for attitude stabilization.</p><div><span class="tools-tag">MATLAB</span><span class="tools-tag">Simulink</span><span class="tools-tag">Control</span><span class="tools-tag">LQR</span></div><a href="https://github.com/Dharun235/dharun.github.io/blob/main/SSY191_Project_Report.pdf">Project Report →</a>`,
-                    'proj-uav': `<h3><i class="fas fa-paper-plane"></i> UAV Modeling and Control Report</h3><p>Voice-coil driven flapping-wing MAV/UAV project: built the test scaffold, developed Arduino Uno + L298N control electronics, tuned PWM duty/frequency/amplitude, evaluated wing-hinge configurations, and analyzed lift performance. The study also includes a computer-vision wing-tracking pipeline (HSV marker segmentation with optional ArUco scaling) for motion analysis.</p><div><span class="tools-tag">UAV</span><span class="tools-tag">Arduino Uno</span><span class="tools-tag">PWM Control</span><span class="tools-tag">Computer Vision</span></div><a href="https://github.com/Dharun235/dharun.github.io/blob/main/Report_UAV.pdf">Project Report (Primary Proof & Details) →</a>`,
-                    'proj-rl': `<h3><i class="fas fa-robot"></i> Robust Mobile Robot Control through Adversarial Training</h3><p>Associated with Chalmers University of Technology. Built an adaptive adversarial agent for robot navigation in a modular RL framework using LiDAR and image inputs, alongside Pure Pursuit and nonlinear MPC controllers for trajectory tracking and obstacle avoidance.</p><div><span class="tools-tag">PyTorch</span><span class="tools-tag">LiDAR</span><span class="tools-tag">MPC</span><span class="tools-tag">RL</span></div><a href="https://github.com/Dharun235/dharun.github.io/blob/main/Final_report___SSY226.pdf">Project Report →</a>`,
-                    'proj-satellite': `<h3><i class="fas fa-satellite-dish"></i> Satellite Image Classification with Deep Learning</h3><p>Built an end-to-end pipeline for classifying agricultural vs. non-agricultural land from satellite imagery using CNNs and Vision Transformers in Keras and PyTorch, with augmentation, transfer learning, and standard classification metrics.</p><div><span class="tools-tag">TensorFlow</span><span class="tools-tag">PyTorch</span><span class="tools-tag">Vision Transformers</span><span class="tools-tag">CNN</span></div><a href="https://github.com/Dharun235/IBM-AI-Professional-Certification/blob/main/AI-capstone-M1L1-v1.ipynb">Notebook →</a>`,
+                    'proj-vikram': `<h3><i class="fas fa-user-astronaut"></i> Vikram</h3><p>A modular AI assistant project focused on practical workflows, clean architecture, and iterative experimentation for real-world automation and productivity tasks.</p><div><span class="tools-tag">Python</span><span class="tools-tag">Automation</span><span class="tools-tag">AI Assistant</span></div><a href="https://github.com/Dharun235/vikram" target="_blank" rel="noopener" style="color:#2dd4bf; text-decoration:underline;">Repo →</a>`,
+                    'proj-agri': `<h3><i class="fas fa-comments"></i> Agri LLM Chat Web App</h3><p>Built a Dockerized web app for agricultural doubt-solving chat with a custom fine-tuned LLM.</p><div><span class="tools-tag">RAG</span><span class="tools-tag">VLM</span><span class="tools-tag">Hugging Face</span></div><a href="https://huggingface.co/datasets/Dharunkumar9/agri-vision-ft-dataset" target="_blank" rel="noopener">Vision FT Dataset →</a><br><a href="https://huggingface.co/datasets/Dharunkumar9/agri-rag-corpus" target="_blank" rel="noopener">RAG Corpus →</a><br><a href="https://huggingface.co/Dharunkumar9/SmolVLM-256M-Instruct-Agri" target="_blank" rel="noopener">Model →</a><br><a href="https://github.com/Dharun235/-Offline-Plant-Health-Advisor-for-New-Age-Urban-Farmers" target="_blank" rel="noopener">Repo →</a>`,
+                    'proj-battery': `<h3><i class="fas fa-battery-full"></i> Battery Capacity Prediction using Transformers</h3><p>Developed deep learning models based on Transformer architectures to predict Li-ion battery capacity degradation and estimate remaining useful life using time-series charge-discharge data.</p><div><span class="tools-tag">Transformers</span><span class="tools-tag">Time-Series</span><span class="tools-tag">PyTorch</span></div><a href="https://huggingface.co/Dharunkumar9/battery-capacity-predictor" target="_blank" rel="noopener">Model →</a><br><a href="https://github.com/Dharun235/Battery-health-prediction" target="_blank" rel="noopener">Repo →</a>`,
+                    'proj-fusion': `<h3><i class="fas fa-car-side"></i> LiDAR-Camera Sensor Fusion for Vehicle Tracking</h3><p>Built a sensor fusion pipeline with the Waymo Open Dataset to detect and track vehicles using LiDAR and camera data. Implemented BEV-based 3D LiDAR detection and Extended Kalman Filter multi-object tracking with data association and track management.</p><div><span class="tools-tag">Sensor Fusion</span><span class="tools-tag">EKF</span><span class="tools-tag">Waymo Open Dataset</span><span class="tools-tag">3D Detection</span></div><a href="https://github.com/Dharun235/sensor-fusion-and-non-linear-filtering-project" target="_blank" rel="noopener">Repo →</a>`,
+                    'proj-quad': `<h3><i class="fas fa-helicopter"></i> Quadrotor Dynamics and LQR Flight Control</h3><p>Associated with Chalmers University of Technology. Developed a 6-DOF quadrotor dynamic model in MATLAB/Simulink and Simscape, implemented IMU sensor fusion with a complementary filter, and designed an LQR controller for attitude stabilization.</p><div><span class="tools-tag">MATLAB</span><span class="tools-tag">Simulink</span><span class="tools-tag">Control</span><span class="tools-tag">LQR</span></div><a href="https://github.com/Dharun235/dharun.github.io/blob/main/SSY191_Project_Report.pdf" target="_blank" rel="noopener">Project Report →</a>`,
+                    'proj-uav': `<h3><i class="fas fa-paper-plane"></i> UAV Modeling and Control Report</h3><p>Voice-coil driven flapping-wing MAV/UAV project: built the test scaffold, developed Arduino Uno + L298N control electronics, tuned PWM duty/frequency/amplitude, evaluated wing-hinge configurations, and analyzed lift performance. The study also includes a computer-vision wing-tracking pipeline (HSV marker segmentation with optional ArUco scaling) for motion analysis.</p><div><span class="tools-tag">UAV</span><span class="tools-tag">Arduino Uno</span><span class="tools-tag">PWM Control</span><span class="tools-tag">Computer Vision</span></div><a href="https://github.com/Dharun235/dharun.github.io/blob/main/Report_UAV.pdf" target="_blank" rel="noopener">Project Report (Primary Proof & Details) →</a>`,
+                    'proj-rl': `<h3><i class="fas fa-robot"></i> Robust Mobile Robot Control through Adversarial Training</h3><p>Associated with Chalmers University of Technology. Built an adaptive adversarial agent for robot navigation in a modular RL framework using LiDAR and image inputs, alongside Pure Pursuit and nonlinear MPC controllers for trajectory tracking and obstacle avoidance.</p><div><span class="tools-tag">PyTorch</span><span class="tools-tag">LiDAR</span><span class="tools-tag">MPC</span><span class="tools-tag">RL</span></div><a href="https://github.com/Dharun235/dharun.github.io/blob/main/Final_report___SSY226.pdf" target="_blank" rel="noopener">Project Report →</a>`,
+                    'proj-satellite': `<h3><i class="fas fa-satellite-dish"></i> Satellite Image Classification with Deep Learning</h3><p>Built an end-to-end pipeline for classifying agricultural vs. non-agricultural land from satellite imagery using CNNs and Vision Transformers in Keras and PyTorch, with augmentation, transfer learning, and standard classification metrics.</p><div><span class="tools-tag">TensorFlow</span><span class="tools-tag">PyTorch</span><span class="tools-tag">Vision Transformers</span><span class="tools-tag">CNN</span></div><a href="https://github.com/Dharun235/IBM-AI-Professional-Certification/blob/main/AI-capstone-M1L1-v1.ipynb" target="_blank" rel="noopener">Notebook →</a>`,
                     'proj-snail3d': `<h3><i class="fas fa-dna"></i> 3D Scanning & Photogrammetry of Snails</h3><p>Exploring 3D scanning and photogrammetry techniques to create high-resolution 3D models of snails at Chalmers University. The project involves capturing detailed images, processing them with photogrammetry software, and generating accurate 3D reconstructions for biological research and visualization.</p><div><span class="tools-tag">3D Scanning</span><span class="tools-tag">Photogrammetry</span><span class="tools-tag">Chalmers</span><span class="tools-tag">Biology</span></div>`,
                 }
             }, {
@@ -545,9 +760,8 @@
                     { id: 'pub-awards', label: 'Accolades', icon: 'fa-trophy' }
                 ],
                 content: {
-                    'pub-papers': `<h3><i class="fas fa-file-alt"></i> Papers</h3><p><strong>ML-Based Smart Glove for Gesture Communication</strong><br>IEEE paper (2025) - Co-author.</p><a href="https://ieeexplore.ieee.org/document/10958541">Article →</a>`,
+                    'pub-papers': `<h3><i class="fas fa-file-alt"></i> Papers</h3><p><strong>ML-Based Smart Glove for Gesture Communication</strong><br>IEEE paper (2025) - Co-author.</p><a href="https://ieeexplore.ieee.org/document/10958541" target="_blank" rel="noopener">Article →</a>`,
                     'pub-awards': `<h3><i class="fas fa-trophy"></i> Accolades</h3><p><strong>DST INSPIRE Scholarship (2018)</strong><br>Department of Science & Technology, India.</p><p><strong>Microsoft for Startups Founders Hub Funding</strong><br>$1000 Azure credits.</p>`,
-                    // ...existing code...
                 }
             }, {
                 id: 'miscellaneous',
@@ -563,15 +777,111 @@
                 ],
                 content: {
                     'conn-volunteer': `<h3><i class="fas fa-hands-helping"></i> Volunteering & Leadership</h3><p><strong>Corporate Host — CHARM</strong><br>Feb 2025 · Hosted companies at Chalmers career fair.</p><p><strong>Program Ambassador — Chalmers University of Technology</strong><br>Sep 2024 – Nov 2025</p><p><strong>Mathematics Mentor — Intize</strong><br>Nov 2025 – Present</p>`,
-                    'conn-refs': `<h3><i class="fas fa-user-check"></i> References</h3><p><strong>Axel Martin</strong><br>Chalmers University of Technology<br><a href="https://www.chalmers.se/personer/marer/" target="_blank">Profile →</a></p><p><strong>Ilaria Torre</strong><br>Chalmers University of Technology<br><a href="https://www.chalmers.se/en/persons/ilariat/" target="_blank">Profile →</a></p>`,
-                    // ...existing code...
-                    'conn-map': `<h3><i class="fas fa-map-marker-alt"></i> My Location</h3><div style="width:100%; height:180px; border-radius:12px; overflow:hidden; margin-top:0.75rem; position:relative;"><iframe src="https://maps.google.com/maps?q=57.6896,11.9779&z=15&output=embed" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>`,
-                    // ...existing code...
+                    'conn-refs': `<h3><i class="fas fa-user-check"></i> References</h3><p><strong>Axel Martin</strong><br>Chalmers University of Technology<br><a href="https://www.chalmers.se/personer/marer/" target="_blank" rel="noopener">Profile →</a></p><p><strong>Ilaria Torre</strong><br>Chalmers University of Technology<br><a href="https://www.chalmers.se/en/persons/ilariat/" target="_blank" rel="noopener">Profile →</a></p>`,
+                    'conn-map': `<h3><i class="fas fa-map-marker-alt"></i> My Location</h3><div style="width:100%; height:clamp(120px,20vw,180px); border-radius:12px; overflow:hidden; margin-top:0.75rem; position:relative;"><iframe src="https://maps.google.com/maps?q=57.6896,11.9779&z=15&output=embed" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Location Map"></iframe></div>`,
                 }
             }];
 
             // ═══════════════════════════════════════
-            // MOLECULAR SCENE (same as before)
+            // RESPONSIVE & QUANTIZATION HELPERS
+            // ═══════════════════════════════════════
+            const getIsMobile = () => window.innerWidth < 768;
+            const getIsSmall = () => window.innerWidth < 480;
+            const getIsLandscape = () => window.innerWidth > window.innerHeight && window.innerHeight < 500;
+            let isMobile = getIsMobile();
+            let isSmall = getIsSmall();
+            let isLandscape = getIsLandscape();
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            // Quantized geometry: lower poly counts on smaller screens
+            function getBlobDetail() {
+                if (isSmall) return 20;
+                if (isLandscape && isMobile) return 18;
+                if (isMobile) return 26;
+                if (window.innerWidth < 1024) return 32;
+                return 48;
+            }
+
+            function getTubeSegments() {
+                if (isSmall) return 24;
+                if (isMobile) return 32;
+                if (window.innerWidth < 1024) return 48;
+                return 64;
+            }
+
+            function getHaloSegments() {
+                if (isSmall) return 16;
+                if (isMobile) return 20;
+                if (window.innerWidth < 1024) return 28;
+                return 40;
+            }
+
+            function getBlobRadius() {
+                if (isSmall) return 0.38;
+                if (isLandscape && isMobile) return 0.35;
+                if (isMobile) return 0.50;
+                if (window.innerWidth < 1024) return 0.62;
+                return 0.72;
+            }
+
+            function getSubBlobRadius() {
+                if (isSmall) return 0.17;
+                if (isLandscape && isMobile) return 0.16;
+                if (isMobile) return 0.24;
+                if (window.innerWidth < 1024) return 0.30;
+                return 0.34;
+            }
+
+            function getOrbitRadius() {
+                if (isSmall) return 1.2;
+                if (isLandscape && isMobile) return 1.1;
+                if (isMobile) return 1.5;
+                if (window.innerWidth < 1024) return 1.9;
+                return 2.2;
+            }
+
+            function getExpandDist() {
+                if (isSmall) return 3.2;
+                if (isLandscape && isMobile) return 3.0;
+                if (isMobile) return 3.5;
+                if (window.innerWidth < 1024) return 4.2;
+                return 5.0;
+            }
+
+            function getParticleCount() {
+                if (prefersReducedMotion) return 80;
+                if (isSmall) return 100;
+                if (isMobile) return 160;
+                if (window.innerWidth < 1024) return 250;
+                return 500;
+            }
+
+            function getDropletCount() {
+                if (prefersReducedMotion) return 12;
+                if (isSmall) return 16;
+                if (isMobile) return 22;
+                if (window.innerWidth < 1024) return 35;
+                return 80;
+            }
+
+            function getMotorCount() {
+                if (prefersReducedMotion) return 1;
+                if (isSmall) return 2;
+                if (isMobile) return 2;
+                if (window.innerWidth < 1024) return 3;
+                return 4;
+            }
+
+            function getSignalCount() {
+                if (prefersReducedMotion) return 1;
+                if (isSmall) return 2;
+                if (isMobile) return 2;
+                if (window.innerWidth < 1024) return 3;
+                return 4;
+            }
+
+            // ═══════════════════════════════════════
+            // SCENE SETUP
             // ═══════════════════════════════════════
             const canvas = document.getElementById('space-canvas');
             const labelsContainer = document.getElementById('labels-container');
@@ -585,20 +895,16 @@
             const subNav = document.getElementById('sub-nav');
             const pageFooter = document.getElementById('page-footer');
 
-            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            const isMobile = window.innerWidth < 768;
-            const isSmall = window.innerWidth < 480;
-
             const scene = new THREE.Scene();
             scene.fog = new THREE.FogExp2('#021a10', 0.0008);
             const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 100);
             const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.8));
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.4 : 1.8));
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.toneMapping = THREE.ACESFilmicToneMapping;
             renderer.toneMappingExposure = 1.1;
             renderer.outputEncoding = THREE.sRGBEncoding;
-            camera.position.set(0, 0.4, 8.5);
+            camera.position.set(0, 0.4, isMobile ? 7.5 : 8.5);
             camera.lookAt(0, 0, 0);
 
             const ambientLight = new THREE.AmbientLight(0x1a4030, 0.6);
@@ -611,7 +917,7 @@
             scene.add(fillLight);
 
             // Particles
-            const particleCount = prefersReducedMotion ? 200 : 500;
+            const particleCount = getParticleCount();
             const particleGeo = new THREE.BufferGeometry();
             const particlePositions = new Float32Array(particleCount * 3);
             const particleColors = new Float32Array(particleCount * 3);
@@ -629,7 +935,7 @@
             particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
             particleGeo.setAttribute('color', new THREE.BufferAttribute(particleColors, 3));
             const particleMat = new THREE.PointsMaterial({
-                size: 0.08,
+                size: isMobile ? 0.05 : 0.08,
                 vertexColors: true,
                 blending: THREE.AdditiveBlending,
                 depthWrite: false,
@@ -640,11 +946,11 @@
             scene.add(particles);
 
             // Vesicles
-            const dropletCount = prefersReducedMotion ? 40 : 80;
+            const dropletCount = getDropletCount();
             const dropletGroup = new THREE.Group();
             for (let i = 0; i < dropletCount; i++) {
-                const radius = 0.08 + Math.random() * 0.22;
-                const geo = new THREE.SphereGeometry(radius, 8, 8);
+                const radius = 0.06 + Math.random() * 0.2;
+                const geo = new THREE.SphereGeometry(radius, 6, 6); // quantized
                 const color = new THREE.Color().setHSL(0.55 + Math.random() * 0.2, 0.5, 0.3 + Math.random() * 0.4);
                 const mat = new THREE.MeshStandardMaterial({
                     color: color,
@@ -673,16 +979,16 @@
             scene.add(dropletGroup);
 
             // Motor proteins
-            const motorCount = prefersReducedMotion ? 2 : 4;
+            const motorCount = getMotorCount();
             const motorGroup = new THREE.Group();
             for (let i = 0; i < motorCount; i++) {
                 const motor = new THREE.Group();
-                const headGeo = new THREE.SphereGeometry(0.12, 8, 8);
+                const headGeo = new THREE.SphereGeometry(0.12, 6, 6);
                 const headMat = new THREE.MeshStandardMaterial({ color: 0xff8c42, roughness: 0.3, emissive: 0xff4400,
                     emissiveIntensity: 0.4 });
                 const head = new THREE.Mesh(headGeo, headMat);
                 motor.add(head);
-                const tailGeo = new THREE.CylinderGeometry(0.03, 0.06, 0.3, 6);
+                const tailGeo = new THREE.CylinderGeometry(0.03, 0.06, 0.3, 5);
                 const tailMat = new THREE.MeshStandardMaterial({ color: 0xffaa66, roughness: 0.4, emissive: 0x331100,
                     emissiveIntensity: 0.2 });
                 const tail = new THREE.Mesh(tailGeo, tailMat);
@@ -696,28 +1002,29 @@
             }
             scene.add(motorGroup);
 
-            // Tracks
-            for (let i = 0; i < 3; i++) {
+            // Tracks (quantized tube segments)
+            for (let i = 0; i < (isMobile ? 2 : 3); i++) {
                 const points = [];
                 const radius = 4 + i * 1.5;
                 for (let a = 0; a <= Math.PI * 2; a += 0.2) {
                     points.push(new THREE.Vector3(Math.cos(a) * radius, Math.sin(a * 2) * 0.6, Math.sin(a) * radius - 1));
                 }
                 const curve = new THREE.CatmullRomCurve3(points, true);
-                const tubeGeo = new THREE.TubeGeometry(curve, 64, 0.03, 6, false);
+                const tubeSegments = getTubeSegments();
+                const tubeGeo = new THREE.TubeGeometry(curve, tubeSegments, 0.03, 5, false);
                 const tubeMat = new THREE.MeshStandardMaterial({ color: new THREE.Color().setHSL(0.25, 0.4, 0.3),
                     roughness: 0.5, transparent: true, opacity: 0.4 });
                 scene.add(new THREE.Mesh(tubeGeo, tubeMat));
             }
 
             // Signaling molecules
-            const signalCount = prefersReducedMotion ? 2 : 4;
+            const signalCount = getSignalCount();
             const signalGroup = new THREE.Group();
             for (let i = 0; i < signalCount; i++) {
                 const signal = new THREE.Group();
-                signal.add(new THREE.Mesh(new THREE.SphereGeometry(0.06, 6, 6), new THREE.MeshBasicMaterial({ color: 0xffffff,
+                signal.add(new THREE.Mesh(new THREE.SphereGeometry(0.06, 4, 4), new THREE.MeshBasicMaterial({ color: 0xffffff,
                     blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.9 })));
-                const trail = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.04, 1.0, 6), new THREE.MeshBasicMaterial({
+                const trail = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.04, 1.0, 5), new THREE.MeshBasicMaterial({
                     color: 0xaaffcc,
                     blending: THREE.AdditiveBlending,
                     depthWrite: false,
@@ -736,7 +1043,7 @@
 
             // Organic blobs
             function createOrganicTexture(baseColor) {
-                const size = 256;
+                const size = 128; // reduced texture size for quantization
                 const c = document.createElement('canvas');
                 c.width = size;
                 c.height = size;
@@ -748,8 +1055,7 @@
                         const i = (y * size + x) * 4;
                         const nx = x / size - 0.5,
                             ny = y / size - 0.5;
-                        const dist = Math.sqrt(nx * nx + ny * ny);
-                        const bump = Math.sin(nx * 25) * Math.cos(ny * 20) * 0.15 + Math.sin(nx * 12 + ny * 15) * 0.1;
+                        const bump = Math.sin(nx * 20) * Math.cos(ny * 15) * 0.15 + Math.sin(nx * 10 + ny * 12) * 0.1;
                         imageData.data[i] = Math.min(1, col.r + bump) * 255;
                         imageData.data[i + 1] = Math.min(1, col.g + bump * 0.9) * 255;
                         imageData.data[i + 2] = Math.min(1, col.b + bump * 0.8) * 255;
@@ -762,7 +1068,7 @@
 
             function createOrganicBlob(radius, colorHex) {
                 const group = new THREE.Group();
-                const detail = isMobile ? 32 : 48;
+                const detail = getBlobDetail();
                 const geo = new THREE.SphereGeometry(radius, detail, detail);
                 const pos = geo.attributes.position;
                 for (let i = 0; i < pos.count; i++) {
@@ -801,7 +1107,7 @@
                 });
                 const shell = new THREE.Mesh(shellGeo, shellMat);
                 group.add(shell);
-                const haloGeo = new THREE.TorusGeometry(radius * 0.72, radius * 0.05, 12, 40);
+                const haloGeo = new THREE.TorusGeometry(radius * 0.72, radius * 0.05, 8, getHaloSegments());
                 const haloMat = new THREE.MeshStandardMaterial({
                     color: new THREE.Color(colorHex),
                     roughness: 0.3,
@@ -824,7 +1130,7 @@
             const allBlobObjects = [];
             const blobObjectMap = {};
             blobData.forEach(data => {
-                const radius = isSmall ? 0.42 : isMobile ? 0.56 : 0.72;
+                const radius = getBlobRadius();
                 const group = createOrganicBlob(radius, data.color);
                 group.position.set(...data.position);
                 group.userData.blobId = data.id;
@@ -877,8 +1183,8 @@
             function createSubBlobMeshes(parentData, parentGroup) {
                 clearSubBlobMeshes();
                 const parentPos = parentGroup.position.clone();
-                const subRadius = isSmall ? 0.2 : isMobile ? 0.26 : 0.34;
-                const orbitRadius = isSmall ? 1.4 : isMobile ? 1.7 : 2.2;
+                const subRadius = getSubBlobRadius();
+                const orbitRadius = getOrbitRadius();
                 const count = parentData.subBlobs.length;
                 const positions = [];
                 for (let i = 0; i < count; i++) {
@@ -909,7 +1215,7 @@
             let expandedBlobId = null;
             let expandedBlobData = null;
             let expandedBlobGroup = null;
-            let targetCameraPos = new THREE.Vector3(0, 0.4, 8.5);
+            let targetCameraPos = new THREE.Vector3(0, 0.4, isMobile ? 7.5 : 8.5);
             let targetLookAt = new THREE.Vector3(0, 0, 0);
             let currentLookAt = new THREE.Vector3(0, 0, 0);
             let mouseX = 0,
@@ -930,6 +1236,9 @@
                     btn.textContent = sub.label;
                     btn.dataset.subId = sub.id;
                     btn.addEventListener('click', () => switchSubSection(blobDataArg, sub.id));
+                    btn.addEventListener('touchend', (e) => { e.preventDefault();
+                        e.stopPropagation();
+                        switchSubSection(blobDataArg, sub.id); });
                     subNav.appendChild(btn);
                 });
                 switchSubSection(blobDataArg, subId);
@@ -946,7 +1255,9 @@
                 overlayBody.appendChild(div);
                 subNav.querySelectorAll('.sub-nav-btn').forEach(b => b.classList.remove('active'));
                 const ab = subNav.querySelector(`[data-sub-id="${subId}"]`);
-                if (ab) ab.classList.add('active');
+                if (ab) { ab.classList.add('active');
+                    ab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); }
+                overlayCard.scrollTop = 0;
             }
 
             function hideOverlay() { overlay.classList.remove('active');
@@ -956,7 +1267,12 @@
                 pageFooter.style.opacity = '1'; }
 
             overlayBg.addEventListener('click', () => returnToGalaxy());
+            overlayBg.addEventListener('touchend', (e) => { e.preventDefault();
+                returnToGalaxy(); });
             overlayClose.addEventListener('click', () => returnToGalaxy());
+            overlayClose.addEventListener('touchend', (e) => { e.preventDefault();
+                e.stopPropagation();
+                returnToGalaxy(); });
 
             function returnToGalaxy() {
                 if (state === 'galaxy') return;
@@ -967,7 +1283,7 @@
                 hideOverlay();
                 clearSubBlobMeshes();
                 clearSubLabels();
-                targetCameraPos.set(0, 0.4, 8.5);
+                targetCameraPos.set(0, 0.4, isMobile ? 7.5 : 8.5);
                 targetLookAt.set(0, 0, 0);
                 allBlobObjects.forEach(g => {
                     g.userData.mat.emissiveIntensity = g.userData.baseEmissiveIntensity;
@@ -1011,7 +1327,8 @@
                 expandedBlobGroup = blobGroup;
                 const tp = blobGroup.position.clone();
                 const dir = tp.clone().normalize();
-                targetCameraPos.copy(tp).add(dir.clone().multiplyScalar(isMobile ? 3.8 : 5.0));
+                const expandDist = getExpandDist();
+                targetCameraPos.copy(tp).add(dir.clone().multiplyScalar(expandDist));
                 targetCameraPos.y += 0.5;
                 targetLookAt.copy(tp);
                 blobGroup.userData.mat.emissiveIntensity = 0.7;
@@ -1055,12 +1372,14 @@
                         hit.userData.mat.emissiveIntensity = 0.65;
                         hit.userData.mat.roughness = 0.15;
                         hit.scale.lerp(new THREE.Vector3(1.14, 1.14, 1.14), 0.3);
-                        cursorHint.classList.add('visible', 'hovering');
-                    } else { cursorHint.classList.remove('hovering'); if (!hit && state === 'galaxy') cursorHint
-                            .classList.remove('visible'); }
+                        if (!isMobile) {
+                            cursorHint.classList.add('visible', 'hovering');
+                        }
+                    } else { cursorHint.classList.remove('hovering'); if (!hit && state === 'galaxy' && !isMobile)
+                            cursorHint.classList.remove('visible'); }
                 }
-                if (!hoveredBlob) cursorHint.classList.remove('hovering');
-                if (hoveredBlob || state === 'expanded') cursorHint.classList.add('visible');
+                if (!hoveredBlob && !isMobile) cursorHint.classList.remove('hovering');
+                if ((hoveredBlob || state === 'expanded') && !isMobile) cursorHint.classList.add('visible');
             });
             canvas.addEventListener('touchstart', e => { if (e.touches.length === 1) { canvas.dataset.tsX = e.touches[0]
                     .clientX;
@@ -1082,14 +1401,18 @@
                     const x = (sp.x * 0.5 + 0.5) * window.innerWidth;
                     const y = (-sp.y * 0.5 + 0.5) * window.innerHeight;
                     const el = labelEls[data.id];
-                    if (el) { el.style.left = x + 'px';
-                        el.style.top = (y - (isSmall ? 36 : isMobile ? 44 : 55)) + 'px';
+                    if (el) {
+                        el.style.left = x + 'px';
+                        const yOffset = isSmall ? 30 : isMobile ? 38 : isLandscape ? 28 : 55;
+                        el.style.top = (y - yOffset) + 'px';
                         el.style.opacity = sp.z > 1 ? '0' : (state === 'expanded' && data.id !== expandedBlobId ?
-                            '0.14' : '1'); }
+                            '0.14' : '1');
+                    }
                 });
                 subLabelEls.forEach(({ el, worldPos }) => { const sp = worldPos.clone().project(camera); el.style.left = ((sp
                         .x * 0.5 + 0.5) * window.innerWidth) + 'px';
-                    el.style.top = ((-sp.y * 0.5 + 0.5) * window.innerHeight - (isSmall ? 20 : 28)) + 'px';
+                    const yOff = isSmall ? 16 : isMobile ? 22 : isLandscape ? 14 : 28;
+                    el.style.top = ((-sp.y * 0.5 + 0.5) * window.innerHeight - yOff) + 'px';
                     el.style.opacity = sp.z > 1 ? '0' : '0.85'; });
             }
 
@@ -1104,7 +1427,7 @@
                         py = mouseY * 0.35;
                     targetCameraPos.x = px;
                     targetCameraPos.y = 0.4 + py;
-                    targetCameraPos.z = 8 + Math.abs(mouseX) * 0.4;
+                    targetCameraPos.z = (isMobile ? 7.5 : 8) + Math.abs(mouseX) * 0.4;
                     targetLookAt.set(px * 0.25, py * 0.25, 0); }
                 allBlobObjects.forEach((group, i) => { const ud = group.userData; if (!ud.isMainBlob) return; const pulse = Math
                         .sin(timeAccum * ud.pulseSpeed + ud.pulseOffset) * 0.03; const base = (state === 'expanded' &&
@@ -1152,13 +1475,32 @@
                 }
                 renderer.render(scene, camera);
             }
-            window.addEventListener('resize', () => { camera.aspect = window.innerWidth / window.innerHeight;
+
+            function handleResize() {
+                isMobile = getIsMobile();
+                isSmall = getIsSmall();
+                isLandscape = getIsLandscape();
+                camera.aspect = window.innerWidth / window.innerHeight;
                 camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight); }, { passive: true });
-            cursorHint.classList.add('visible');
-            setTimeout(() => { if (!hoveredBlob && state === 'galaxy') cursorHint.classList.remove('visible'); }, 3000);
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.4 : 1.8));
+                if (state === 'galaxy') {
+                    targetCameraPos.set(0, 0.4, isMobile ? 7.5 : 8.5);
+                    targetLookAt.set(0, 0, 0);
+                }
+            }
+            window.addEventListener('resize', handleResize, { passive: true });
+            window.addEventListener('orientationchange', () => { setTimeout(handleResize, 300); }, { passive: true });
+
+            if (!isMobile) {
+                cursorHint.classList.add('visible');
+                setTimeout(() => { if (!hoveredBlob && state === 'galaxy') cursorHint.classList.remove('visible'); },
+                3000);
+            } else {
+                cursorHint.style.display = 'none';
+            }
             animate();
-            console.log('%c🧬 Updated molecular portfolio ready!', 'color:#22d3bb;font-size:1rem;');
+            console.log('%c🧬 Quantized molecular portfolio — optimized for all screens', 'color:#5eead4;font-size:1rem;');
         })();
     </script>
 </body>
