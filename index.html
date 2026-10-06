@@ -317,21 +317,26 @@
 
         /* ── layout ── */
         .container {
+            width: min(100%, 900px);
             max-width: 900px;
             margin: 0 auto;
-            padding: 3rem 1.8rem 6rem;
+            padding: 4.5rem 1.8rem 3rem;
             position: relative;
             z-index: 2;
             display: flex;
             flex-direction: column;
         }
 
+        .page-mode .container {
+            width: auto;
+            max-width: none;
+            margin-left: calc(200px + 4rem);
+            margin-right: 2rem;
+        }
+
         .side-nav {
-            position: fixed;
-            top: 50%;
-            left: 1.5rem;
-            width: 190px;
-            transform: translateY(-50%);
+            position: relative;
+            width: 100%;
             z-index: 10;
             padding: 1rem 0.85rem;
             border: 1px solid rgba(160, 190, 255, 0.18);
@@ -342,9 +347,30 @@
             -webkit-backdrop-filter: blur(18px);
         }
 
+        .left-rail {
+            position: fixed;
+            top: 50%;
+            left: clamp(1rem, 3vw, 2.5rem);
+            width: 200px;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        .left-rail .side-nav {
+            position: relative;
+            top: auto;
+            left: auto;
+            width: 100%;
+            max-height: calc(100vh - 3rem);
+            overflow-y: auto;
+            margin: 0;
+            transform: none;
+        }
+
         .side-nav-label {
             display: block;
-            margin: 0 0 0.75rem 0.7rem;
+            margin: 0.2rem 0 0.85rem;
+            text-align: center;
             color: #8294bb;
             font-family: 'Orbitron', sans-serif;
             font-size: 0.58rem;
@@ -354,7 +380,7 @@
 
         .side-nav a {
             display: block;
-            padding: 0.42rem 0.7rem;
+            padding: 0.48rem 0.85rem;
             border-left: 1px solid transparent;
             color: #9eacce;
             font-family: 'Orbitron', sans-serif;
@@ -389,25 +415,18 @@
             margin-bottom: 2rem;
         }
 
-        .page-mode:not(.section-about) .header {
+        .page-mode .header {
             display: none;
         }
 
         .profile-rail {
-            display: none;
-            position: fixed;
-            top: 50%;
-            right: 1.5rem;
-            width: 180px;
-            transform: translateY(-50%);
-            z-index: 10;
-            padding: 1rem;
-            border: 1px solid rgba(180, 210, 255, 0.22);
-            border-radius: 16px;
-            background: linear-gradient(145deg, rgba(20, 31, 67, 0.24), rgba(5, 9, 22, 0.12));
-            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28), 0 0 28px rgba(102, 145, 255, 0.08);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
+            display: block;
+            position: relative;
+            width: 100%;
+            padding: 0 0 1.15rem;
+            margin-bottom: 0.75rem;
+            border: 0;
+            border-bottom: 1px solid rgba(180, 210, 255, 0.18);
             text-align: center;
             opacity: 0.78;
             animation: profileFloat 5s ease-in-out infinite;
@@ -416,10 +435,6 @@
         @keyframes profileFloat {
             0%, 100% { margin-top: 0; }
             50% { margin-top: -5px; }
-        }
-
-        .page-mode:not(.section-about) .profile-rail {
-            display: block;
         }
 
         .profile-rail img {
@@ -571,7 +586,7 @@
         /* ── sections ── */
         .section {
             width: 100%;
-            margin-bottom: 4.5rem;
+            margin-bottom: 5rem;
             opacity: 0;
             transform: translateY(32px);
             transition: opacity 1s ease, transform 1s ease;
@@ -699,8 +714,13 @@
 
         .page-mode .section.page-active {
             display: block;
+            width: 78%;
+            margin-left: auto;
+            margin-right: auto;
             opacity: 1;
             transform: none;
+            padding: 1rem 0 1.5rem;
+            margin-bottom: 0;
             animation: pageEnter 0.42s ease both;
         }
 
@@ -728,7 +748,7 @@
             letter-spacing: 0.35em;
             text-transform: uppercase;
             color: #e0e9ff;
-            margin-bottom: 2.2rem;
+            margin-bottom: 2.8rem;
             display: flex;
             align-items: center;
             gap: 1.2rem;
@@ -752,7 +772,7 @@
             color: #d4ddf5;
             line-height: 1.8;
             font-weight: 300;
-            max-width: 680px;
+            max-width: 860px;
         }
 
         .about-text strong {
@@ -952,7 +972,7 @@
             color: #ccd8f0;
             line-height: 1.75;
             font-weight: 300;
-            max-width: 640px;
+            max-width: 860px;
         }
 
         .exp-desc ul {
@@ -1041,7 +1061,7 @@
             line-height: 1.75;
             font-weight: 300;
             margin-left: 1.4rem;
-            max-width: 620px;
+            max-width: 860px;
         }
 
         .project-desc ul {
@@ -1093,7 +1113,7 @@
 
         .project-thumb {
             width: 100%;
-            max-width: 520px;
+            max-width: 760px;
             aspect-ratio: 16 / 9;
             margin-top: 0.9rem;
             margin-left: 1.4rem;
@@ -1235,7 +1255,7 @@
             line-height: 1.7;
             font-weight: 300;
             margin-top: 0.4rem;
-            max-width: 620px;
+            max-width: 860px;
         }
 
         .vol-item {
@@ -1277,7 +1297,7 @@
             line-height: 1.7;
             font-weight: 300;
             margin-top: 0.3rem;
-            max-width: 620px;
+            max-width: 860px;
         }
 
         /* ── contact ── */
@@ -1988,13 +2008,85 @@
         }
 
         @media (max-width: 1300px) {
-            .page-mode:not(.section-about) .profile-rail {
+            .left-rail {
+                position: fixed;
+                top: 50%;
+                left: 1.25rem;
+                right: auto;
+                width: 200px;
+                margin: 0;
+                max-height: calc(100vh - 2rem);
+                transform: translateY(-50%);
+            }
+
+            .profile-rail img {
+                width: 62px;
+                height: 62px;
+            }
+
+            .profile-rail-name {
+                margin-top: 0.7rem;
+            }
+
+            .profile-rail-role,
+            .profile-rail-status {
+                margin-top: 0.45rem;
+            }
+
+            .side-nav {
                 position: relative;
                 top: auto;
-                right: auto;
-                width: min(900px, calc(100% - 3rem));
+                left: auto;
+                width: 100%;
+                margin: 0;
+                transform: none;
+                display: block;
+            }
+
+            .page-mode .container {
+                width: auto;
+                max-width: none;
+                margin-left: calc(200px + 4rem);
+                margin-right: 2rem;
+            }
+
+            .side-nav-label {
+                margin: 0.2rem 0 0.85rem;
+                text-align: center;
+            }
+
+            .side-nav a {
+                border-left: 1px solid transparent;
+                border-bottom: 0;
+            }
+
+            .side-nav a:hover,
+            .side-nav a:focus-visible {
+                border-left-color: #a8c4ff;
+                border-bottom-color: transparent;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .left-rail {
+                position: relative;
+                top: auto;
+                left: auto;
+                width: calc(100% - 2.4rem);
+                max-height: none;
                 margin: 1rem auto 0;
                 transform: none;
+            }
+
+            .left-rail .side-nav {
+                max-height: none;
+                overflow: visible;
+            }
+
+            .profile-rail {
+                position: relative;
+                bottom: auto;
+                left: auto;
                 display: flex;
                 align-items: center;
                 gap: 0.8rem;
@@ -2022,7 +2114,8 @@
                 position: relative;
                 top: auto;
                 left: auto;
-                width: min(900px, calc(100% - 3rem));
+                width: 100%;
+                padding: 0.7rem;
                 margin: 1rem auto 0;
                 transform: none;
                 display: flex;
@@ -2031,26 +2124,10 @@
                 gap: 0.2rem;
             }
 
-            .side-nav-label {
-                margin-right: 0.4rem;
-            }
-
-            .side-nav a {
-                border-left: 0;
-                border-bottom: 1px solid transparent;
-            }
-
-            .side-nav a:hover,
-            .side-nav a:focus-visible {
-                border-left-color: transparent;
-                border-bottom-color: #a8c4ff;
-            }
-        }
-
-        @media (max-width: 700px) {
-            .side-nav {
-                width: calc(100% - 2.4rem);
-                padding: 0.7rem;
+            .page-mode .container {
+                width: 100%;
+                max-width: none;
+                margin: 0;
             }
 
             .side-nav-label {
@@ -2072,7 +2149,15 @@
             }
 
             .container {
-                padding: 2rem 1.2rem 4rem;
+                width: 100%;
+                max-width: none;
+                margin: 0;
+                padding: 3rem 1.2rem 2rem;
+            }
+
+            .page-mode .section.page-active {
+                width: 100%;
+                padding: 0.5rem 0 1rem;
             }
 
             .header {
@@ -2082,6 +2167,7 @@
             .section-title {
                 gap: 0.7rem;
                 letter-spacing: 0.18em;
+                margin-bottom: 1.8rem;
             }
 
             .avatar {
@@ -2282,8 +2368,19 @@
     <div class="planet-mars" id="planetMars"></div>
     <div class="grain"></div>
 
-    <nav class="side-nav" aria-label="Section navigation">
-        <span class="side-nav-label">Explore</span>
+    <aside class="left-rail" aria-label="Profile and section navigation">
+        <nav class="side-nav" aria-label="Section navigation">
+            <div class="profile-rail" aria-label="Profile summary">
+                <img src="photo1.jpeg" alt="Dharunkumar Senthilkumar"
+                    onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Portrait_Placeholder.png/240px-Portrait_Placeholder.png';">
+                <div>
+                    <div class="profile-rail-name">Dharunkumar Senthilkumar</div>
+                    <div class="profile-rail-role">AI · Mechatronics · Control</div>
+                    <div class="profile-rail-status">Available Dec 2026</div>
+                </div>
+            </div>
+
+            <span class="side-nav-label">Explore</span>
         <a href="#about">About</a>
         <a href="#now">Now</a>
         <a href="#skills">Skills</a>
@@ -2295,16 +2392,7 @@
         <a href="#awards">Awards</a>
         <a href="#extracurricular">Extracurricular</a>
         <a href="#contact">Contact</a>
-    </nav>
-
-    <aside class="profile-rail" aria-label="Profile summary">
-        <img src="photo1.jpeg" alt="Dharunkumar Senthilkumar"
-            onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Portrait_Placeholder.png/240px-Portrait_Placeholder.png';">
-        <div>
-            <div class="profile-rail-name">Dharunkumar Senthilkumar</div>
-            <div class="profile-rail-role">AI · Mechatronics · Control</div>
-            <div class="profile-rail-status">Available Dec 2026</div>
-        </div>
+        </nav>
     </aside>
 
     <div class="container">
